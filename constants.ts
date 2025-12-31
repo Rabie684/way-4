@@ -71,6 +71,29 @@ export const MOCK_STUDENTS: User[] = [
   },
 ];
 
+// Demo accounts for quick testing
+export const MOCK_DEMO_STUDENT: User = {
+  id: 'demo_stud',
+  email: 'demo.student@way.dz',
+  name: 'طالب تجريبي',
+  profilePic: 'https://picsum.photos/100/100?random=99',
+  role: UserRole.Student,
+  university: 'جامعة الجزائر 1',
+  college: 'كلية العلوم',
+};
+
+export const MOCK_DEMO_PROFESSOR: User = {
+  id: 'demo_prof',
+  email: 'demo.professor@way.dz',
+  name: 'أستاذ تجريبي',
+  profilePic: 'https://picsum.photos/100/100?random=98',
+  role: UserRole.Professor,
+  university: 'جامعة وهران 2',
+  college: 'كلية الطب',
+  stars: 20,
+};
+
+
 export const MOCK_CHANNELS: Channel[] = [
   {
     id: 'chan1',
@@ -89,7 +112,7 @@ export const MOCK_CHANNELS: Channel[] = [
       { id: 'msg2', senderId: 'stud1', senderName: 'سارة خالد', text: 'شكراً أستاذ.', timestamp: new Date(Date.now() - 1800000) },
     ],
     googleMeetLink: 'https://meet.google.com/xxx-yyyy-zzz',
-    subscribers: ['stud1'],
+    subscribers: ['stud1', 'demo_stud'], // Add demo student
   },
   {
     id: 'chan2',
@@ -119,7 +142,7 @@ export const MOCK_CHANNELS: Channel[] = [
     ],
     chatMessages: [],
     googleMeetLink: 'https://meet.google.com/jkl-mno-pqr',
-    subscribers: ['stud2'],
+    subscribers: ['stud2', 'demo_stud'], // Add demo student
   },
 ];
 
@@ -130,6 +153,15 @@ export const MOCK_PRIVATE_CHATS: PrivateChat[] = [
     messages: [
       { id: 'pmsg1', senderId: 'prof1', senderName: 'أحمد علي', text: 'كيف حالك يا سارة؟', timestamp: new Date(Date.now() - 1000000) },
       { id: 'pmsg2', senderId: 'stud1', senderName: 'سارة خالد', text: 'بخير، شكراً أستاذ.', timestamp: new Date(Date.now() - 500000) },
+    ],
+  },
+  // Add a demo private chat for testing
+  {
+    id: 'pc_demo_prof_stud',
+    participants: ['demo_prof', 'demo_stud'],
+    messages: [
+      { id: 'dpmsg1', senderId: 'demo_prof', senderName: 'أستاذ تجريبي', text: 'مرحباً بالطالب التجريبي!', timestamp: new Date(Date.now() - 200000) },
+      { id: 'dpmsg2', senderId: 'demo_stud', senderName: 'طالب تجريبي', text: 'مرحباً أستاذ تجريبي.', timestamp: new Date(Date.now() - 100000) },
     ],
   },
 ];

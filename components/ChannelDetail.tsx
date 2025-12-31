@@ -180,19 +180,23 @@ const ChannelDetail: React.FC<ChannelDetailProps> = ({ channel, currentUser, onB
                     >
                       {item.type === 'pdf' && (
                         <div className="flex items-center">
-                          <span className="text-red-500 text-2xl mr-2">📄</span>
+                          <span className="text-green-500 text-2xl mr-2">📄</span>
                           <a href={item.url} target="_blank" rel="noopener noreferrer" className="text-green-600 dark:text-green-400 hover:underline">
                             {item.fileName || 'ملف PDF'}
                           </a>
                         </div>
                       )}
                       {item.type === 'image' && (
-                        <a href={item.url} target="_blank" rel="noopener noreferrer">
-                          <img src={item.url} alt="content" className="max-w-xs h-auto rounded-md" />
-                        </a>
+                        <div className="flex items-center">
+                          <span className="text-green-500 text-2xl mr-2">🖼️</span>
+                          <a href={item.url} target="_blank" rel="noopener noreferrer" className="text-green-600 dark:text-green-400 hover:underline">
+                            مشاهدة الصورة
+                          </a>
+                        </div>
                       )}
                       {item.type === 'video' && (
                         <div className="flex flex-col items-start">
+                          <span className="text-green-500 text-2xl mr-2">🎥</span>
                           <video controls src={item.url} poster={item.thumbnail} className="max-w-xs h-auto rounded-md mb-2"></video>
                           <a href={item.url} target="_blank" rel="noopener noreferrer" className="text-green-600 dark:text-green-400 hover:underline">
                             مشاهدة الفيديو
@@ -218,7 +222,9 @@ const ChannelDetail: React.FC<ChannelDetailProps> = ({ channel, currentUser, onB
             <div className="flex flex-col space-y-6">
               {/* AI Translation Feature */}
               <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-                <h3 className="text-xl font-semibold mb-4 text-gray-900 dark:text-gray-100">مساعد جارفس (ترجمة وملخصات من المجلات العلمية الجزائرية)</h3>
+                <h3 className="text-xl font-semibold mb-4 text-gray-900 dark:text-gray-100 flex items-center">
+                  <span className="text-green-500 text-2xl mr-2">🤖</span> مساعد جارفس (ترجمة وملخصات من المجلات العلمية الجزائرية)
+                </h3>
                 <form onSubmit={handleTranslateSummary}>
                   <textarea
                     className="w-full p-3 border border-gray-300 rounded-md dark:bg-gray-700 dark:text-gray-100 mb-4 h-32 resize-y custom-scrollbar"

@@ -167,7 +167,7 @@ const StudentDashboard: React.FC<StudentDashboardProps> = ({
           {channels.map((channel) => (
             <div
               key={channel.id}
-              className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 relative flex flex-col justify-between"
+              className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 relative flex flex-col justify-between cursor-pointer hover:shadow-lg transition-all duration-300 transform hover:scale-103"
             >
               <div>
                 <h4 className="text-xl font-bold text-green-600 dark:text-green-400 mb-2">{channel.name}</h4>

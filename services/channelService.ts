@@ -1,6 +1,13 @@
 import { Channel, ChannelContent, Message, PrivateChat, User, UserRole } from '../types';
-import { MOCK_CHANNELS, MOCK_PRIVATE_CHATS, MOCK_PROFESSORS } from '../constants';
+import { MOCK_CHANNELS, MOCK_PRIVATE_CHATS, MOCK_PROFESSORS, MOCK_DEMO_PROFESSOR } from '../constants';
 import { authService } from './authService';
+
+// To ensure MOCK_PROFESSORS used here is up-to-date with potential demo users,
+// we should re-derive it or ensure constants are fully initialized.
+// For this mock, we'll re-include demo professor if not already present,
+// but in a real app, this would be handled by a single source of truth for user data.
+const ALL_MOCK_PROFESSORS = [...MOCK_PROFESSORS, MOCK_DEMO_PROFESSOR].filter((v, i, a) => a.findIndex(t => (t.id === v.id)) === i);
+
 
 // This is a mock service. In a real application, this would interact with a backend.
 export const channelService = {
@@ -23,7 +30,7 @@ export const channelService = {
 
   createChannel: async (professorId: string, name: string, university: string, college: string): Promise<Channel> => {
     await new Promise(resolve => setTimeout(resolve, 500));
-    const professor = MOCK_PROFESSORS.find(p => p.id === professorId);
+    const professor = ALL_MOCK_PROFESSORS.find(p => p.id === professorId); // Use ALL_MOCK_PROFESSORS
     if (!professor) {
       throw new Error('Professor not found');
     }
@@ -82,13 +89,13 @@ export const channelService = {
       MOCK_CHANNELS[channelIndex].subscribers.push(studentId);
 
       // Increment professor's stars
-      const professorIndex = MOCK_PROFESSORS.findIndex(p => p.id === MOCK_CHANNELS[channelIndex].professorId);
+      const professorIndex = ALL_MOCK_PROFESSORS.findIndex(p => p.id === MOCK_CHANNELS[channelIndex].professorId); // Use ALL_MOCK_PROFESSORS
       if (professorIndex !== -1) {
-        MOCK_PROFESSORS[professorIndex].stars = (MOCK_PROFESSORS[professorIndex].stars || 0) + 5;
+        ALL_MOCK_PROFESSORS[professorIndex].stars = (ALL_MOCK_PROFESSORS[professorIndex].stars || 0) + 5;
         // If the current logged-in user is this professor, update their local storage too.
         const currentUser = authService.getCurrentUser();
-        if (currentUser?.id === MOCK_PROFESSORS[professorIndex].id) {
-            authService.updateUser(MOCK_PROFESSORS[professorIndex]);
+        if (currentUser?.id === ALL_MOCK_PROFESSORS[professorIndex].id) {
+            authService.updateUser(ALL_MOCK_PROFESSORS[professorIndex]);
         }
       }
     }

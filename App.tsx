@@ -8,7 +8,8 @@ import StudentDashboard from './components/StudentDashboard';
 import ChannelDetail from './components/ChannelDetail';
 import ProfileSettingsComponent from './components/ProfileSettings';
 import PrivateChatView from './components/PrivateChatView';
-import { MOCK_CHANNELS, MOCK_PRIVATE_CHATS } from './constants';
+import WelcomeScreen from './components/WelcomeScreen'; // Import new component
+import { MOCK_CHANNELS, MOCK_PRIVATE_CHATS, MOCK_DEMO_STUDENT, MOCK_DEMO_PROFESSOR } from './constants';
 
 type AppView = 'dashboard' | 'channelDetail' | 'profileSettings' | 'privateChats';
 
@@ -23,11 +24,17 @@ const App: React.FC = () => {
     return savedSettings ? JSON.parse(savedSettings) : { isDarkMode: false, language: Language.AR };
   });
 
+  const [showWelcomeScreen, setShowWelcomeScreen] = useState(true); // New state for welcome screen
+  const [authScreenMode, setAuthScreenMode] = useState<'login' | 'register'>('login'); // To control AuthScreen's initial mode
+
   useEffect(() => {
     // Attempt to load current user from local storage on app start
     const storedUser = authService.getCurrentUser();
     if (storedUser) {
       setCurrentUser(storedUser);
+      setShowWelcomeScreen(false); // If user is logged in, hide welcome screen
+    } else {
+      setShowWelcomeScreen(true); // If no user, show welcome screen
     }
 
     // Apply dark mode class to body
@@ -44,6 +51,7 @@ const App: React.FC = () => {
   const handleLoginSuccess = useCallback((user: User) => {
     setCurrentUser(user);
     setCurrentView('dashboard');
+    setShowWelcomeScreen(false); // Ensure welcome screen is hidden after login
   }, []);
 
   const handleLogout = useCallback(async () => {
@@ -51,6 +59,7 @@ const App: React.FC = () => {
     setCurrentUser(null);
     setSelectedChannel(null);
     setCurrentView('dashboard');
+    setShowWelcomeScreen(true); // Show welcome screen after logout
   }, []);
 
   const handleUpdateUser = useCallback((updatedUser: User) => {
@@ -84,10 +93,50 @@ const App: React.FC = () => {
     setCurrentView('privateChats');
   }, []);
 
-  if (!currentUser) {
-    return <AuthScreen onLoginSuccess={handleLoginSuccess} />;
+  const handleDemoLogin = useCallback(async (role: UserRole) => {
+    let demoUser: User | null = null;
+    if (role === UserRole.Student) {
+      demoUser = MOCK_DEMO_STUDENT;
+    } else if (role === UserRole.Professor) {
+      demoUser = MOCK_DEMO_PROFESSOR;
+    }
+
+    if (demoUser) {
+      const loggedInUser = await authService.login(demoUser.email, role);
+      if (loggedInUser) {
+        handleLoginSuccess(loggedInUser);
+      } else {
+        // Fallback if demo user not found in authService (e.g., if MOCK_DEMO_STUDENT wasn't in the internal array)
+        // In this mock setup, it should always succeed if constants are correct.
+        console.error("Failed to login demo user.");
+      }
+    }
+  }, [handleLoginSuccess]);
+
+  // Render Welcome Screen first if active
+  if (showWelcomeScreen) {
+    return (
+      <div className={`flex flex-col min-h-screen ${profileSettings.isDarkMode ? 'dark' : ''}`}>
+        <WelcomeScreen
+          onShowLogin={() => { setShowWelcomeScreen(false); setAuthScreenMode('login'); }}
+          onShowRegister={() => { setShowWelcomeScreen(false); setAuthScreenMode('register'); }}
+          onDemoLogin={handleDemoLogin} // Pass demo login handler
+        />
+      </div>
+    );
   }
 
+  // Then Auth Screen if no current user
+  if (!currentUser) {
+    return (
+      <AuthScreen
+        onLoginSuccess={handleLoginSuccess}
+        initialIsRegister={authScreenMode === 'register'}
+      />
+    );
+  }
+
+  // Otherwise, render the main application content
   return (
     <div className={`flex flex-col min-h-screen ${profileSettings.isDarkMode ? 'dark' : ''}`}>
       <Navbar

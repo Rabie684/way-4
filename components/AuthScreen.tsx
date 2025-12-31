@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { User, UserRole } from '../types';
 import { authService } from '../services/authService';
 import Input from './Input';
@@ -8,10 +8,11 @@ import { MOCK_UNIVERSITIES } from '../constants';
 
 interface AuthScreenProps {
   onLoginSuccess: (user: User) => void;
+  initialIsRegister?: boolean; // New prop
 }
 
-const AuthScreen: React.FC<AuthScreenProps> = ({ onLoginSuccess }) => {
-  const [isRegister, setIsRegister] = useState(false);
+const AuthScreen: React.FC<AuthScreenProps> = ({ onLoginSuccess, initialIsRegister = false }) => {
+  const [isRegister, setIsRegister] = useState(initialIsRegister);
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
   const [role, setRole] = useState<UserRole>(UserRole.Student);
@@ -19,6 +20,10 @@ const AuthScreen: React.FC<AuthScreenProps> = ({ onLoginSuccess }) => {
   const [selectedCollegeId, setSelectedCollegeId] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+
+  useEffect(() => {
+    setIsRegister(initialIsRegister);
+  }, [initialIsRegister]);
 
   const universitiesOptions = MOCK_UNIVERSITIES.map(uni => ({ value: uni.id, label: uni.name }));
   const selectedUniversity = MOCK_UNIVERSITIES.find(uni => uni.id === selectedUniversityId);

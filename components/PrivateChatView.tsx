@@ -5,7 +5,7 @@ import ChatWindow from './ChatWindow';
 import LoadingSpinner from './LoadingSpinner';
 import Button from './Button';
 import Select from './Select';
-import { MOCK_PROFESSORS, MOCK_STUDENTS } from '../constants';
+import { MOCK_PROFESSORS, MOCK_STUDENTS, MOCK_DEMO_PROFESSOR, MOCK_DEMO_STUDENT } from '../constants';
 
 interface PrivateChatViewProps {
   currentUser: User;
@@ -53,7 +53,10 @@ const PrivateChatView: React.FC<PrivateChatViewProps> = ({ currentUser, onBack, 
     }
   };
 
-  const allPossibleRecipients = (currentUser.role === UserRole.Professor ? MOCK_STUDENTS : MOCK_PROFESSORS)
+  // Combine all mock users including demos for recipient selection
+  const allKnownUsers = [...MOCK_PROFESSORS, ...MOCK_STUDENTS, MOCK_DEMO_PROFESSOR, MOCK_DEMO_STUDENT];
+
+  const allPossibleRecipients = allKnownUsers
     .filter(u => u.id !== currentUser.id) // Exclude self
     .map(u => ({ value: u.id, label: `${u.name} (${u.role === UserRole.Professor ? 'أستاذ' : 'طالب'})` }));
 
@@ -66,7 +69,7 @@ const PrivateChatView: React.FC<PrivateChatViewProps> = ({ currentUser, onBack, 
     setLoading(true);
     setError('');
     try {
-      const recipient = [...MOCK_PROFESSORS, ...MOCK_STUDENTS].find(u => u.id === selectedRecipientId);
+      const recipient = allKnownUsers.find(u => u.id === selectedRecipientId);
       if (!recipient) {
         throw new Error('المستلم غير موجود.');
       }
@@ -138,7 +141,7 @@ const PrivateChatView: React.FC<PrivateChatViewProps> = ({ currentUser, onBack, 
             ) : (
               privateChats.map((chat) => {
                 const otherParticipantId = chat.participants.find(id => id !== currentUser.id);
-                const otherParticipant = [...MOCK_PROFESSORS, ...MOCK_STUDENTS].find(u => u.id === otherParticipantId);
+                const otherParticipant = allKnownUsers.find(u => u.id === otherParticipantId); // Use allKnownUsers
                 const chatName = otherParticipant?.name || 'مستخدم غير معروف';
                 const chatPic = otherParticipant?.profilePic || 'https://picsum.photos/100/100?random=0';
 
@@ -170,7 +173,7 @@ const PrivateChatView: React.FC<PrivateChatViewProps> = ({ currentUser, onBack, 
               messages={selectedChat.messages}
               currentUser={currentUser}
               onSendMessage={handleSendMessage}
-              chatTitle={`دردشة مع ${[...MOCK_PROFESSORS, ...MOCK_STUDENTS].find(u => u.id === selectedChat.participants.find(p => p !== currentUser.id))?.name || 'مستخدم'}`}
+              chatTitle={`دردشة مع ${allKnownUsers.find(u => u.id === selectedChat.participants.find(p => p !== currentUser.id))?.name || 'مستخدم'}`}
             />
           ) : (
             <div className="flex items-center justify-center h-full bg-white dark:bg-gray-800 rounded-lg shadow-md text-gray-500 dark:text-gray-400">

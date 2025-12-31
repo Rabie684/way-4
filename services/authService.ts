@@ -1,5 +1,9 @@
 import { User, UserRole } from '../types';
-import { MOCK_PROFESSORS, MOCK_STUDENTS } from '../constants';
+import { MOCK_PROFESSORS, MOCK_STUDENTS, MOCK_DEMO_PROFESSOR, MOCK_DEMO_STUDENT } from '../constants';
+
+// Initialize mock data including demo users
+const ALL_MOCK_PROFESSORS = [...MOCK_PROFESSORS, MOCK_DEMO_PROFESSOR];
+const ALL_MOCK_STUDENTS = [...MOCK_STUDENTS, MOCK_DEMO_STUDENT];
 
 // This is a mock authentication service. In a real application, this would interact with a backend.
 export const authService = {
@@ -8,9 +12,9 @@ export const authService = {
 
     let user: User | undefined;
     if (role === UserRole.Professor) {
-      user = MOCK_PROFESSORS.find(u => u.email === email);
+      user = ALL_MOCK_PROFESSORS.find(u => u.email === email);
     } else {
-      user = MOCK_STUDENTS.find(u => u.email === email);
+      user = ALL_MOCK_STUDENTS.find(u => u.email === email);
     }
 
     if (user) {
@@ -24,7 +28,7 @@ export const authService = {
     await new Promise(resolve => setTimeout(resolve, 500)); // Simulate API call
 
     // Check if user already exists
-    const allUsers = [...MOCK_PROFESSORS, ...MOCK_STUDENTS];
+    const allUsers = [...ALL_MOCK_PROFESSORS, ...ALL_MOCK_STUDENTS];
     if (allUsers.some(u => u.email === email)) {
       console.error('User with this email already exists.');
       return null;
@@ -42,9 +46,9 @@ export const authService = {
     };
 
     if (role === UserRole.Professor) {
-      MOCK_PROFESSORS.push(newUser); // Add to mock data
+      ALL_MOCK_PROFESSORS.push(newUser); // Add to mock data
     } else {
-      MOCK_STUDENTS.push(newUser); // Add to mock data
+      ALL_MOCK_STUDENTS.push(newUser); // Add to mock data
     }
 
     localStorage.setItem('currentUser', JSON.stringify(newUser));
@@ -64,14 +68,14 @@ export const authService = {
   updateUser: async (updatedUser: User): Promise<User> => {
     await new Promise(resolve => setTimeout(resolve, 200)); // Simulate API call
     if (updatedUser.role === UserRole.Professor) {
-        const index = MOCK_PROFESSORS.findIndex(u => u.id === updatedUser.id);
+        const index = ALL_MOCK_PROFESSORS.findIndex(u => u.id === updatedUser.id);
         if (index !== -1) {
-            MOCK_PROFESSORS[index] = updatedUser;
+            ALL_MOCK_PROFESSORS[index] = updatedUser;
         }
     } else {
-        const index = MOCK_STUDENTS.findIndex(u => u.id === updatedUser.id);
+        const index = ALL_MOCK_STUDENTS.findIndex(u => u.id === updatedUser.id);
         if (index !== -1) {
-            MOCK_STUDENTS[index] = updatedUser;
+            ALL_MOCK_STUDENTS[index] = updatedUser;
         }
     }
     localStorage.setItem('currentUser', JSON.stringify(updatedUser));
