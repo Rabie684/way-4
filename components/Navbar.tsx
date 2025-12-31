@@ -8,6 +8,7 @@ interface NavbarProps {
   onShowProfileSettings: () => void;
   onNavigateToDashboard: () => void;
   onNavigateToPrivateChats: () => void;
+  onNavigateToJarvis: () => void; // New prop for Jarvis navigation
 }
 
 const Navbar: React.FC<NavbarProps> = ({
@@ -16,6 +17,7 @@ const Navbar: React.FC<NavbarProps> = ({
   onShowProfileSettings,
   onNavigateToDashboard,
   onNavigateToPrivateChats,
+  onNavigateToJarvis, // New prop
 }) => {
   return (
     <nav className="bg-green-700 dark:bg-green-900 p-4 shadow-md sticky top-0 z-10">
@@ -34,6 +36,9 @@ const Navbar: React.FC<NavbarProps> = ({
               </Button>
               <Button variant="ghost" className="text-white" onClick={onNavigateToPrivateChats}>
                 الدردشات الخاصة
+              </Button>
+              <Button variant="ghost" className="text-white" onClick={onNavigateToJarvis}>
+                🤖 مساعد جارفس
               </Button>
             </>
           )}

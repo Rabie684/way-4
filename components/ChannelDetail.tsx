@@ -26,12 +26,6 @@ const ChannelDetail: React.FC<ChannelDetailProps> = ({ channel, currentUser, onB
   const [uploadFile, setUploadFile] = useState<File | null>(null);
   const [uploadFileType, setUploadFileType] = useState<'pdf' | 'image' | 'video'>('pdf');
 
-  const [summaryText, setSummaryText] = useState('');
-  const [translatedSummary, setTranslatedSummary] = useState('');
-  const [translationLoading, setTranslationLoading] = useState(false);
-  const [translationError, setTranslationError] = useState('');
-  const [targetLanguage, setTargetLanguage] = useState<Language>(Language.EN);
-
   const isProfessor = currentUser.role === UserRole.Professor && currentUser.id === channel.professorId;
   const isSubscribed = channel.subscribers.includes(currentUser.id);
 
@@ -86,28 +80,7 @@ const ChannelDetail: React.FC<ChannelDetailProps> = ({ channel, currentUser, onB
       setError('فشل إرسال الرسالة.');
     }
   };
-
-  const handleTranslateSummary = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (summaryText.trim() === '') {
-      setTranslationError('الرجاء إدخال الملخص للترجمة.');
-      return;
-    }
-
-    setTranslationLoading(true);
-    setTranslationError('');
-    setTranslatedSummary('');
-    try {
-      const result = await geminiService.translateSummary(summaryText, targetLanguage);
-      setTranslatedSummary(result);
-    } catch (err) {
-      setTranslationError('فشل الترجمة.');
-      console.error(err);
-    } finally {
-      setTranslationLoading(false);
-    }
-  };
-
+  
   const [message, setMessage] = useState('');
 
   useEffect(() => {
@@ -220,39 +193,6 @@ const ChannelDetail: React.FC<ChannelDetailProps> = ({ channel, currentUser, onB
             </div>
 
             <div className="flex flex-col space-y-6">
-              {/* AI Translation Feature */}
-              <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-                <h3 className="text-xl font-semibold mb-4 text-gray-900 dark:text-gray-100 flex items-center">
-                  <span className="text-green-500 text-2xl mr-2">🤖</span> مساعد جارفس (ترجمة وملخصات من المجلات العلمية الجزائرية)
-                </h3>
-                <form onSubmit={handleTranslateSummary}>
-                  <textarea
-                    className="w-full p-3 border border-gray-300 rounded-md dark:bg-gray-700 dark:text-gray-100 mb-4 h-32 resize-y custom-scrollbar"
-                    placeholder="أدخل الملخص هنا ليترجمه جارفس..."
-                    value={summaryText}
-                    onChange={(e) => setSummaryText(e.target.value)}
-                  ></textarea>
-                  <Select
-                      id="targetLanguage"
-                      label="اللغة المستهدفة للترجمة"
-                      options={languageOptions.filter(opt => opt.value !== currentSettings.language)} // Don't allow translating to current UI language
-                      value={targetLanguage}
-                      onChange={(e) => setTargetLanguage(e.target.value as Language)}
-                      className="mb-4"
-                  />
-                  <Button type="submit" fullWidth disabled={translationLoading}>
-                    {translationLoading ? 'جارفس يترجم...' : 'اطلب من جارفس الترجمة'}
-                  </Button>
-                </form>
-                {translationError && <p className="text-red-500 mt-4">{translationError}</p>}
-                {translatedSummary && (
-                  <div className="mt-4 p-4 bg-gray-50 dark:bg-gray-700 rounded-md border border-gray-200 dark:border-gray-600">
-                    <h4 className="font-semibold text-gray-900 dark:text-gray-100 mb-2">ترجمة جارفس:</h4>
-                    <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap">{translatedSummary}</p>
-                  </div>
-                )}
-              </div>
-
               {/* Professor Content Upload Form */}
               {isProfessor && (
                 <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">

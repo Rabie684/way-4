@@ -9,9 +9,10 @@ import ChannelDetail from './components/ChannelDetail';
 import ProfileSettingsComponent from './components/ProfileSettings';
 import PrivateChatView from './components/PrivateChatView';
 import WelcomeScreen from './components/WelcomeScreen'; // Import new component
+import JarvisAssistant from './components/JarvisAssistant'; // Import Jarvis Assistant component
 import { MOCK_CHANNELS, MOCK_PRIVATE_CHATS, MOCK_DEMO_STUDENT, MOCK_DEMO_PROFESSOR } from './constants';
 
-type AppView = 'dashboard' | 'channelDetail' | 'profileSettings' | 'privateChats';
+type AppView = 'dashboard' | 'channelDetail' | 'profileSettings' | 'privateChats' | 'jarvisAssistant'; // Add new view type
 
 const App: React.FC = () => {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
@@ -93,6 +94,10 @@ const App: React.FC = () => {
     setCurrentView('privateChats');
   }, []);
 
+  const handleNavigateToJarvis = useCallback(() => { // New handler for Jarvis navigation
+    setCurrentView('jarvisAssistant');
+  }, []);
+
   const handleDemoLogin = useCallback(async (role: UserRole) => {
     let demoUser: User | null = null;
     if (role === UserRole.Student) {
@@ -145,6 +150,7 @@ const App: React.FC = () => {
         onShowProfileSettings={handleShowProfileSettings}
         onNavigateToDashboard={handleBackToDashboard}
         onNavigateToPrivateChats={handleNavigateToPrivateChats}
+        onNavigateToJarvis={handleNavigateToJarvis} // Pass Jarvis navigation handler
       />
       <main className="flex-1 flex overflow-hidden">
         {currentView === 'dashboard' && currentUser.role === UserRole.Professor && (
@@ -189,6 +195,13 @@ const App: React.FC = () => {
                 privateChats={privateChats}
                 setPrivateChats={setPrivateChats}
             />
+        )}
+        {currentView === 'jarvisAssistant' && ( // Render JarvisAssistant component
+          <JarvisAssistant
+            currentUser={currentUser}
+            currentSettings={profileSettings}
+            onBack={handleBackToDashboard}
+          />
         )}
       </main>
     </div>
