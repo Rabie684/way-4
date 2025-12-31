@@ -99,7 +99,7 @@ const PrivateChatView: React.FC<PrivateChatViewProps> = ({ currentUser, onBack, 
 
   return (
     <div className="flex flex-col h-full bg-gray-100 dark:bg-gray-900">
-      <div className="p-4 md:p-6 bg-white dark:bg-gray-800 shadow-md sticky top-0 z-10 flex flex-col sm:flex-row justify-between items-center">
+      <div className="p-4 md:p-6 bg-white dark:bg-gray-800 shadow-lg sticky top-0 z-10 flex flex-col sm:flex-row justify-between items-center">
         <div className="flex items-center mb-2 sm:mb-0">
           <Button onClick={onBack} variant="secondary" size="sm" className="ml-2">
             {'<'} عودة
@@ -122,7 +122,7 @@ const PrivateChatView: React.FC<PrivateChatViewProps> = ({ currentUser, onBack, 
           </h3>
           <div className="p-4 space-y-2 custom-scrollbar overflow-y-auto max-h-[calc(100vh-200px)]">
             {showNewChatForm && (
-                <form onSubmit={handleCreateNewChat} className="mb-4 p-3 border border-green-200 dark:border-green-700 rounded-md bg-green-50 dark:bg-green-900">
+                <form onSubmit={handleCreateNewChat} className="mb-4 p-3 border border-green-200 dark:border-green-700 rounded-lg bg-green-50 dark:bg-green-900 shadow-inner">
                     <Select
                         id="newRecipient"
                         label="المستلم"
@@ -148,8 +148,8 @@ const PrivateChatView: React.FC<PrivateChatViewProps> = ({ currentUser, onBack, 
                 return (
                   <div
                     key={chat.id}
-                    className={`flex items-center p-3 rounded-md cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors
-                                ${selectedChat?.id === chat.id ? 'bg-green-100 dark:bg-green-700' : ''}`}
+                    className={`flex items-center p-3 rounded-lg cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors shadow-sm
+                                ${selectedChat?.id === chat.id ? 'bg-green-100 dark:bg-green-700 shadow-md' : ''}`}
                     onClick={() => setSelectedChat(chat)}
                   >
                     <img src={chatPic} alt="Profile" className="w-10 h-10 rounded-full mr-3" />

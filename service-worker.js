@@ -26,22 +26,21 @@ const ASSETS_TO_CACHE = [
   '/components/ChannelDetail.tsx',
   '/components/PrivateChatView.tsx',
   '/components/WelcomeScreen.tsx',
-  '/components/JarvisAssistant.tsx',
+  '/components/JarvisAssistant.tsx', // New component
+  // PWA Icons (using placeholders for now, in a real app these would be actual files)
+  '/pwa-icon-192.png', 
+  '/pwa-icon-512.png',
   // External CDN assets
   'https://cdn.tailwindcss.com',
   'https://esm.sh/@google/genai@^1.34.0',
   'https://esm.sh/react@^19.2.3/',
   'https://esm.sh/react@^19.2.3',
-  'https://esm.sh/react-dom@^19.2.3/',
-  // Icons and images used in the app shell or frequently
-  'https://picsum.photos/32/32', // Favicon
-  'https://picsum.photos/192/192', // PWA Icon (placeholder)
-  'https://picsum.photos/512/512'  // PWA Icon (placeholder)
+  'https://esm.sh/react-dom@^19.2.3/'
 ];
 
 // URLs that should always be fetched from the network and not cached
 const NETWORK_ONLY_URLS = [
-  'https://api.google.com/gemini/', // Gemini API calls
+  'https://generativelanguage.googleapis.com/', // Gemini API calls
   '/api/', // Placeholder for any potential backend API calls
   'https://meet.google.com/' // Google Meet links are external and dynamic
 ];
@@ -136,7 +135,7 @@ self.addEventListener('push', (event) => {
   const title = data.title || 'جامعتك الرقمية Way';
   const options = {
     body: data.body || 'لديك إشعار جديد!',
-    icon: 'https://picsum.photos/192/192', // PWA Icon
+    icon: '/pwa-icon-192.png', // PWA Icon
   };
   event.waitUntil(self.registration.showNotification(title, options));
 });

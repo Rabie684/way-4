@@ -18,7 +18,7 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onShowLogin, onShowRegist
       }}
     >
       {/* Subtle green overlay for Algerian theme */}
-      <div className="absolute inset-0 bg-gradient-to-br from-green-800 to-green-600 opacity-70"></div>
+      <div className="absolute inset-0 bg-gradient-to-br from-green-900 to-green-700 opacity-75"></div>
       
       <div className="relative z-10 text-center text-white p-8 bg-black bg-opacity-60 rounded-lg shadow-2xl max-w-2xl transform transition-all duration-500 scale-95 hover:scale-100">
         <h1 className="text-5xl md:text-6xl font-extrabold mb-4 animate-fade-in-up">
@@ -47,8 +47,8 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onShowLogin, onShowRegist
           </div>
         </div>
       </div>
-      {/* Add some basic keyframes for animation */}
-      <style jsx>{`
+      {/* FIX: Removed 'jsx' prop and ensure it's standard CSS within a <style> tag */}
+      <style>{`
         @keyframes fadeInOut {
           0%, 100% { opacity: 0; transform: translateY(20px); }
           50% { opacity: 1; transform: translateY(0); }

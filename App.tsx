@@ -8,8 +8,9 @@ import StudentDashboard from './components/StudentDashboard';
 import ChannelDetail from './components/ChannelDetail';
 import ProfileSettingsComponent from './components/ProfileSettings';
 import PrivateChatView from './components/PrivateChatView';
-import WelcomeScreen from './components/WelcomeScreen'; // Import new component
-import JarvisAssistant from './components/JarvisAssistant'; // Import Jarvis Assistant component
+import WelcomeScreen from './components/WelcomeScreen';
+// FIX: Import JarvisAssistant as a default export
+import JarvisAssistant from './components/JarvisAssistant';
 import { MOCK_CHANNELS, MOCK_PRIVATE_CHATS, MOCK_DEMO_STUDENT, MOCK_DEMO_PROFESSOR } from './constants';
 
 type AppView = 'dashboard' | 'channelDetail' | 'profileSettings' | 'privateChats' | 'jarvisAssistant'; // Add new view type

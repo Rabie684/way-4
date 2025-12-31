@@ -149,7 +149,7 @@ const ChannelDetail: React.FC<ChannelDetailProps> = ({ channel, currentUser, onB
                   channel.content.map((item) => (
                     <div
                       key={item.id}
-                      className="border border-gray-200 dark:border-gray-700 rounded-md p-4 flex items-center justify-between"
+                      className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 flex items-center justify-between shadow-sm"
                     >
                       {item.type === 'pdf' && (
                         <div className="flex items-center">

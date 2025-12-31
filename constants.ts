@@ -1,6 +1,8 @@
 import { Language, UserRole, User, Channel, University, PrivateChat } from './types';
 
-export const API_KEY = process.env.API_KEY || 'YOUR_GEMINI_API_KEY_HERE'; // Gemini API Key
+// Gemini API Key: Set this as an environment variable `API_KEY` for production.
+// For local development without env variable, replace 'YOUR_GEMINI_API_KEY_HERE' with your actual key.
+export const API_KEY = process.env.API_KEY || 'YOUR_GEMINI_API_KEY_HERE';
 
 export const LANGUAGES = [
   { code: Language.AR, name: 'العربية' },
