@@ -53,7 +53,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ messages, currentUser, onSendMe
               <div
                 className={`max-w-[70%] p-3 rounded-lg ${
                   message.senderId === currentUser.id
-                    ? 'bg-blue-600 text-white'
+                    ? 'bg-green-600 text-white'
                     : 'bg-gray-200 text-gray-900 dark:bg-gray-700 dark:text-gray-100'
                 }`}
               >

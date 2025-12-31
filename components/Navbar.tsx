@@ -18,7 +18,7 @@ const Navbar: React.FC<NavbarProps> = ({
   onNavigateToPrivateChats,
 }) => {
   return (
-    <nav className="bg-blue-700 dark:bg-blue-900 p-4 shadow-md sticky top-0 z-10">
+    <nav className="bg-green-700 dark:bg-green-900 p-4 shadow-md sticky top-0 z-10">
       <div className="container mx-auto flex justify-between items-center">
         <div className="flex items-center space-x-4">
           <h1

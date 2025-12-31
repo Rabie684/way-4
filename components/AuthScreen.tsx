@@ -150,7 +150,7 @@ const AuthScreen: React.FC<AuthScreenProps> = ({ onLoginSuccess }) => {
           <Button
             variant="ghost"
             onClick={() => setIsRegister(!isRegister)}
-            className="ml-2 text-blue-600 dark:text-blue-400 hover:underline"
+            className="ml-2 text-green-600 dark:text-green-400 hover:underline"
           >
             {isRegister ? 'تسجيل الدخول' : 'إنشاء حساب'}
           </Button>

@@ -80,7 +80,7 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({
             <img
               src={profilePic}
               alt="Profile"
-              className="w-24 h-24 rounded-full object-cover border-2 border-blue-500 mb-4"
+              className="w-24 h-24 rounded-full object-cover border-2 border-green-500 mb-4"
             />
             <Input
               id="profilePic"
@@ -124,7 +124,7 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({
               id="darkMode"
               checked={isDarkMode}
               onChange={() => setIsDarkMode(!isDarkMode)}
-              className="h-5 w-5 text-blue-600 rounded border-gray-300 focus:ring-blue-500"
+              className="h-5 w-5 text-green-600 rounded border-gray-300 focus:ring-green-500"
             />
           </div>
           <Button onClick={handleUpdateSettings} fullWidth disabled={loading}>

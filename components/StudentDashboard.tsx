@@ -170,7 +170,7 @@ const StudentDashboard: React.FC<StudentDashboardProps> = ({
               className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 relative flex flex-col justify-between"
             >
               <div>
-                <h4 className="text-xl font-bold text-blue-600 dark:text-blue-400 mb-2">{channel.name}</h4>
+                <h4 className="text-xl font-bold text-green-600 dark:text-green-400 mb-2">{channel.name}</h4>
                 <p className="text-gray-700 dark:text-gray-300">أستاذ: {channel.professorName} <span className="text-yellow-400">⭐ {MOCK_PROFESSORS.find(p => p.id === channel.professorId)?.stars || 0}</span></p>
                 <p className="text-gray-700 dark:text-gray-300">الجامعة: {channel.university}</p>
                 <p className="text-gray-700 dark:text-gray-300">الكلية: {channel.college}</p>

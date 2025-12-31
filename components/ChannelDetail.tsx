@@ -181,7 +181,7 @@ const ChannelDetail: React.FC<ChannelDetailProps> = ({ channel, currentUser, onB
                       {item.type === 'pdf' && (
                         <div className="flex items-center">
                           <span className="text-red-500 text-2xl mr-2">📄</span>
-                          <a href={item.url} target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline">
+                          <a href={item.url} target="_blank" rel="noopener noreferrer" className="text-green-600 dark:text-green-400 hover:underline">
                             {item.fileName || 'ملف PDF'}
                           </a>
                         </div>
@@ -194,7 +194,7 @@ const ChannelDetail: React.FC<ChannelDetailProps> = ({ channel, currentUser, onB
                       {item.type === 'video' && (
                         <div className="flex flex-col items-start">
                           <video controls src={item.url} poster={item.thumbnail} className="max-w-xs h-auto rounded-md mb-2"></video>
-                          <a href={item.url} target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline">
+                          <a href={item.url} target="_blank" rel="noopener noreferrer" className="text-green-600 dark:text-green-400 hover:underline">
                             مشاهدة الفيديو
                           </a>
                         </div>
@@ -218,11 +218,11 @@ const ChannelDetail: React.FC<ChannelDetailProps> = ({ channel, currentUser, onB
             <div className="flex flex-col space-y-6">
               {/* AI Translation Feature */}
               <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-                <h3 className="text-xl font-semibold mb-4 text-gray-900 dark:text-gray-100">الترجمة الآلية للملخصات</h3>
+                <h3 className="text-xl font-semibold mb-4 text-gray-900 dark:text-gray-100">مساعد جارفس (ترجمة وملخصات من المجلات العلمية الجزائرية)</h3>
                 <form onSubmit={handleTranslateSummary}>
                   <textarea
                     className="w-full p-3 border border-gray-300 rounded-md dark:bg-gray-700 dark:text-gray-100 mb-4 h-32 resize-y custom-scrollbar"
-                    placeholder="أدخل الملخص هنا للترجمة..."
+                    placeholder="أدخل الملخص هنا ليترجمه جارفس..."
                     value={summaryText}
                     onChange={(e) => setSummaryText(e.target.value)}
                   ></textarea>
@@ -235,13 +235,13 @@ const ChannelDetail: React.FC<ChannelDetailProps> = ({ channel, currentUser, onB
                       className="mb-4"
                   />
                   <Button type="submit" fullWidth disabled={translationLoading}>
-                    {translationLoading ? 'جاري الترجمة...' : 'ترجمة الملخص'}
+                    {translationLoading ? 'جارفس يترجم...' : 'اطلب من جارفس الترجمة'}
                   </Button>
                 </form>
                 {translationError && <p className="text-red-500 mt-4">{translationError}</p>}
                 {translatedSummary && (
                   <div className="mt-4 p-4 bg-gray-50 dark:bg-gray-700 rounded-md border border-gray-200 dark:border-gray-600">
-                    <h4 className="font-semibold text-gray-900 dark:text-gray-100 mb-2">الترجمة:</h4>
+                    <h4 className="font-semibold text-gray-900 dark:text-gray-100 mb-2">ترجمة جارفس:</h4>
                     <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap">{translatedSummary}</p>
                   </div>
                 )}

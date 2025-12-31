@@ -1,6 +1,6 @@
 import { GoogleGenAI } from "@google/genai";
 import { API_KEY } from '../constants';
-import { Language } from '../types'; // Moved from constants.ts
+import { Language } from '../types';
 
 // Manual base64 encode/decode functions as per Gemini guidelines
 function decode(base64: string) {
@@ -37,7 +37,7 @@ export const geminiService = {
   translateSummary: async (summary: string, targetLanguage: Language): Promise<string> => {
     if (!API_KEY || API_KEY === 'YOUR_GEMINI_API_KEY_HERE') {
       console.warn("Gemini API key is not configured. Translation will not work.");
-      return `[Translation Disabled: Please set API_KEY] Original: ${summary}`;
+      return `[Jarvis Disabled: Please set API_KEY] Original: ${summary}`;
     }
 
     const ai = new GoogleGenAI({ apiKey: API_KEY });
@@ -47,15 +47,15 @@ export const geminiService = {
     // of a frontend-only application using the Gemini API directly without a specific
     // backend RAG (Retrieval-Augmented Generation) system integrated with such a database.
     // This instruction is a simulation for the model's persona.
-    const systemInstruction = `You are an expert academic translator. Translate summaries of scientific papers. Ensure the translation is accurate, maintains academic tone, and uses terminology appropriate for scientific contexts, as found in Algerian scientific journals. Always translate the provided summary into the target language.`;
+    const systemInstruction = `أنت مساعد ذكاء اصطناعي متخصص اسمه "جارفس". مهمتك هي ترجمة ملخصات الأوراق العلمية بدقة متناهية، مع الحفاظ على الأسلوب الأكاديمي واستخدام المصطلحات المناسبة للسياقات العلمية، مستقاة من المجلات العلمية الجزائرية فقط. يجب عليك دائماً ترجمة الملخص المقدم إلى اللغة المستهدفة.`;
 
     const languageMap = {
-      [Language.AR]: 'Arabic',
-      [Language.EN]: 'English',
-      [Language.FR]: 'French',
+      [Language.AR]: 'العربية',
+      [Language.EN]: 'الإنجليزية',
+      [Language.FR]: 'الفرنسية',
     };
 
-    const prompt = `Translate the following scientific summary into ${languageMap[targetLanguage]}:
+    const prompt = `أيها جارفس، يرجى ترجمة الملخص العلمي التالي إلى ${languageMap[targetLanguage]}:
     
     "${summary}"`;
 
@@ -75,12 +75,12 @@ export const geminiService = {
       if (translatedText) {
         return translatedText;
       } else {
-        return `Failed to translate summary. Original: ${summary}`;
+        return `فشل جارفس في ترجمة الملخص. الأصل: ${summary}`;
       }
     } catch (error) {
-      console.error("Error translating summary with Gemini API:", error);
+      console.error("خطأ في ترجمة الملخص بواسطة جارفس:", error);
       // Implement robust error handling, e.g., exponential backoff for retries
-      return `Error translating summary: ${error instanceof Error ? error.message : String(error)}. Original: ${summary}`;
+      return `حدث خطأ أثناء ترجمة الملخص بواسطة جارفس: ${error instanceof Error ? error.message : String(error)}. الأصل: ${summary}`;
     }
   },
 };

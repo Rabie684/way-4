@@ -156,7 +156,7 @@ const ProfessorDashboard: React.FC<ProfessorDashboardProps> = ({ currentUser, on
               className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 cursor-pointer hover:shadow-lg transition-shadow"
               onClick={() => onSelectChannel(channel)}
             >
-              <h4 className="text-xl font-bold text-blue-600 dark:text-blue-400 mb-2">{channel.name}</h4>
+              <h4 className="text-xl font-bold text-green-600 dark:text-green-400 mb-2">{channel.name}</h4>
               <p className="text-gray-700 dark:text-gray-300">الجامعة: {channel.university}</p>
               <p className="text-gray-700 dark:text-gray-300">الكلية: {channel.college}</p>
               <p className="text-gray-700 dark:text-gray-300">

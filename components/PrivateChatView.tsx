@@ -119,7 +119,7 @@ const PrivateChatView: React.FC<PrivateChatViewProps> = ({ currentUser, onBack, 
           </h3>
           <div className="p-4 space-y-2 custom-scrollbar overflow-y-auto max-h-[calc(100vh-200px)]">
             {showNewChatForm && (
-                <form onSubmit={handleCreateNewChat} className="mb-4 p-3 border border-blue-200 dark:border-blue-700 rounded-md bg-blue-50 dark:bg-blue-900">
+                <form onSubmit={handleCreateNewChat} className="mb-4 p-3 border border-green-200 dark:border-green-700 rounded-md bg-green-50 dark:bg-green-900">
                     <Select
                         id="newRecipient"
                         label="المستلم"
@@ -146,7 +146,7 @@ const PrivateChatView: React.FC<PrivateChatViewProps> = ({ currentUser, onBack, 
                   <div
                     key={chat.id}
                     className={`flex items-center p-3 rounded-md cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors
-                                ${selectedChat?.id === chat.id ? 'bg-blue-100 dark:bg-blue-700' : ''}`}
+                                ${selectedChat?.id === chat.id ? 'bg-green-100 dark:bg-green-700' : ''}`}
                     onClick={() => setSelectedChat(chat)}
                   >
                     <img src={chatPic} alt="Profile" className="w-10 h-10 rounded-full mr-3" />
