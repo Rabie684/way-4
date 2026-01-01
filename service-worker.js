@@ -30,6 +30,9 @@ const ASSETS_TO_CACHE = [
   // PWA Icons (using placeholders for now, in a real app these would be actual files)
   '/pwa-icon-192.png', 
   '/pwa-icon-512.png',
+  // New PWA Icons for Ibn Khaldoun University
+  '/pwa-icon-uik-192.png',
+  '/pwa-icon-uik-512.png',
   // External CDN assets
   'https://cdn.tailwindcss.com',
   'https://esm.sh/@google/genai@^1.34.0',

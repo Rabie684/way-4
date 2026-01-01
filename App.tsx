@@ -28,6 +28,7 @@ const App: React.FC = () => {
 
   const [showWelcomeScreen, setShowWelcomeScreen] = useState(true); // New state for welcome screen
   const [authScreenMode, setAuthScreenMode] = useState<'login' | 'register'>('login'); // To control AuthScreen's initial mode
+  const [deferredPrompt, setDeferredPrompt] = useState<Event | null>(null); // State to store PWA install prompt
 
   useEffect(() => {
     // Attempt to load current user from local storage on app start
@@ -49,6 +50,23 @@ const App: React.FC = () => {
     // Set document language attribute
     document.documentElement.lang = profileSettings.language;
   }, [profileSettings]);
+
+  useEffect(() => {
+    // Listen for the beforeinstallprompt event for PWA installation
+    const handleBeforeInstallPrompt = (e: Event) => {
+      // Prevent the mini-infobar from appearing on mobile
+      e.preventDefault();
+      // Stash the event so it can be triggered later.
+      setDeferredPrompt(e);
+      console.log('beforeinstallprompt event fired.');
+    };
+
+    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+
+    return () => {
+      window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+    };
+  }, []);
 
   const handleLoginSuccess = useCallback((user: User) => {
     setCurrentUser(user);
@@ -119,6 +137,19 @@ const App: React.FC = () => {
     }
   }, [handleLoginSuccess]);
 
+  const handleInstallPWA = useCallback(async () => {
+    if (deferredPrompt) {
+      // Show the install prompt
+      (deferredPrompt as any).prompt();
+      // Wait for the user to respond to the prompt
+      const { outcome } = await (deferredPrompt as any).userChoice;
+      // Optionally, send analytics event with outcome of user choice
+      console.log(`User response to the install prompt: ${outcome}`);
+      // We've used the prompt, and it can't be used again. Clear it.
+      setDeferredPrompt(null);
+    }
+  }, [deferredPrompt]);
+
   // Render Welcome Screen first if active
   if (showWelcomeScreen) {
     return (
@@ -127,6 +158,8 @@ const App: React.FC = () => {
           onShowLogin={() => { setShowWelcomeScreen(false); setAuthScreenMode('login'); }}
           onShowRegister={() => { setShowWelcomeScreen(false); setAuthScreenMode('register'); }}
           onDemoLogin={handleDemoLogin} // Pass demo login handler
+          deferredPrompt={deferredPrompt} // Pass deferredPrompt
+          onInstallPWA={handleInstallPWA} // Pass install handler
         />
       </div>
     );

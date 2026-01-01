@@ -6,9 +6,11 @@ interface WelcomeScreenProps {
   onShowLogin: () => void;
   onShowRegister: () => void;
   onDemoLogin: (role: UserRole) => void; // New prop for demo login
+  deferredPrompt: Event | null; // PWA install prompt event
+  onInstallPWA: () => void; // Handler to trigger PWA install
 }
 
-const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onShowLogin, onShowRegister, onDemoLogin }) => {
+const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onShowLogin, onShowRegister, onDemoLogin, deferredPrompt, onInstallPWA }) => {
   return (
     <div
       className="relative w-full min-h-screen bg-cover bg-center flex items-center justify-center p-4 overflow-hidden"
@@ -36,9 +38,16 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onShowLogin, onShowRegist
             إنشاء حساب
           </Button>
         </div>
+        {deferredPrompt && ( // Show PWA install button if prompt is available
+          <div className="mt-8 pt-4 border-t border-green-400 border-opacity-40">
+            <Button onClick={onInstallPWA} variant="ghost" size="md" className="text-white border border-white hover:bg-white hover:text-green-700 animate-fade-in-up delay-300">
+              <span role="img" aria-label="download" className="mr-2">⬇️</span> تنزيل التطبيق
+            </Button>
+          </div>
+        )}
         <div className="mt-8 pt-4 border-t border-green-400 border-opacity-40">
-          <p className="text-lg mb-4 text-green-100 animate-fade-in-up delay-300">أو جرب التطبيق الآن:</p>
-          <div className="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4 sm:space-x-reverse animate-fade-in-up delay-400">
+          <p className="text-lg mb-4 text-green-100 animate-fade-in-up delay-400">أو جرب التطبيق الآن:</p>
+          <div className="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4 sm:space-x-reverse animate-fade-in-up delay-500">
             <Button onClick={() => onDemoLogin(UserRole.Student)} variant="ghost" size="md" className="text-green-300 hover:text-white border border-green-300 hover:border-green-100">
               دخول كطالب تجريبي
             </Button>
@@ -60,6 +69,7 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onShowLogin, onShowRegist
         .animate-fade-in-up.delay-200 { animation-delay: 0.2s; }
         .animate-fade-in-up.delay-300 { animation-delay: 0.3s; }
         .animate-fade-in-up.delay-400 { animation-delay: 0.4s; }
+        .animate-fade-in-up.delay-500 { animation-delay: 0.5s; }
         
         @keyframes fadeInUp {
           from {
