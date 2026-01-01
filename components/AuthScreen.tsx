@@ -25,6 +25,7 @@ const AuthScreen: React.FC<AuthScreenProps> = ({ onLoginSuccess, initialIsRegist
     setIsRegister(initialIsRegister);
   }, [initialIsRegister]);
 
+  // Ensure default option is selected if no university/college is picked
   const universitiesOptions = MOCK_UNIVERSITIES.map(uni => ({ value: uni.id, label: uni.name }));
   const selectedUniversity = MOCK_UNIVERSITIES.find(uni => uni.id === selectedUniversityId);
   const collegesOptions = selectedUniversity
@@ -72,7 +73,7 @@ const AuthScreen: React.FC<AuthScreenProps> = ({ onLoginSuccess, initialIsRegist
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900 p-4">
-      <div className="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-xl w-full max-w-md">
+      <div className="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-2xl w-full max-w-md">
         <h2 className="text-3xl font-bold text-center text-gray-900 dark:text-gray-100 mb-6">
           {isRegister ? 'إنشاء حساب جديد' : 'تسجيل الدخول'}
         </h2>

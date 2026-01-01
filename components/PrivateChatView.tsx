@@ -54,7 +54,14 @@ const PrivateChatView: React.FC<PrivateChatViewProps> = ({ currentUser, onBack, 
   };
 
   // Combine all mock users including demos for recipient selection
-  const allKnownUsers = [...MOCK_PROFESSORS, ...MOCK_STUDENTS, MOCK_DEMO_PROFESSOR, MOCK_DEMO_STUDENT];
+  // Ensure de-duplication when combining
+  const allKnownUsers = [
+    ...MOCK_PROFESSORS.filter((v, i, a) => a.findIndex(t => t.id === v.id || t.email === v.email) === i),
+    ...MOCK_STUDENTS.filter((v, i, a) => a.findIndex(t => t.id === v.id || t.email === v.email) === i),
+    MOCK_DEMO_PROFESSOR,
+    MOCK_DEMO_STUDENT
+  ].filter((v, i, a) => a.findIndex(t => t.id === v.id || t.email === v.email) === i);
+
 
   const allPossibleRecipients = allKnownUsers
     .filter(u => u.id !== currentUser.id) // Exclude self
@@ -116,7 +123,7 @@ const PrivateChatView: React.FC<PrivateChatViewProps> = ({ currentUser, onBack, 
 
       <div className="flex-1 grid grid-cols-1 md:grid-cols-3 gap-6 p-4 md:p-6">
         {/* Chat List */}
-        <div className="md:col-span-1 bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
+        <div className="md:col-span-1 bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
           <h3 className="text-xl font-semibold p-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-700">
             جهات الاتصال
           </h3>
@@ -176,7 +183,7 @@ const PrivateChatView: React.FC<PrivateChatViewProps> = ({ currentUser, onBack, 
               chatTitle={`دردشة مع ${allKnownUsers.find(u => u.id === selectedChat.participants.find(p => p !== currentUser.id))?.name || 'مستخدم'}`}
             />
           ) : (
-            <div className="flex items-center justify-center h-full bg-white dark:bg-gray-800 rounded-lg shadow-md text-gray-500 dark:text-gray-400">
+            <div className="flex items-center justify-center h-full bg-white dark:bg-gray-800 rounded-xl shadow-lg text-gray-500 dark:text-gray-400">
               اختر دردشة من القائمة لبدء المحادثة.
             </div>
           )}

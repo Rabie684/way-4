@@ -194,7 +194,7 @@ const JarvisAssistant: React.FC<JarvisAssistantProps> = ({ currentUser, currentS
               className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}
             >
               <div
-                className={`max-w-[70%] p-3 rounded-lg ${
+                className={`max-w-[70%] p-3 rounded-2xl ${ // Larger rounded corners
                   message.sender === 'user'
                     ? 'bg-green-600 text-white shadow-md'
                     : 'bg-gray-200 text-gray-900 dark:bg-gray-700 dark:text-gray-100 shadow-sm'

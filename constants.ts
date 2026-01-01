@@ -13,18 +13,57 @@ export const LANGUAGES = [
 export const MOCK_UNIVERSITIES: University[] = [
   {
     id: 'uni1',
-    name: 'جامعة الجزائر 1',
+    name: 'جامعة الجزائر 1 بن يوسف بن خدة',
     colleges: [
-      { id: 'coll1', name: 'كلية العلوم', specializations: ['الرياضيات', 'الفيزياء', 'الكيمياء'] },
-      { id: 'coll2', name: 'كلية الحقوق', specializations: ['القانون العام', 'القانون الخاص'] },
+      { id: 'coll1_1', name: 'كلية العلوم', specializations: ['الرياضيات', 'الفيزياء', 'الكيمياء', 'الإعلام الآلي'] },
+      { id: 'coll1_2', name: 'كلية الحقوق', specializations: ['القانون العام', 'القانون الخاص', 'علوم سياسية'] },
+      { id: 'coll1_3', name: 'كلية الطب', specializations: ['الطب البشري', 'طب الأسنان', 'الصيدلة'] },
     ],
   },
   {
     id: 'uni2',
-    name: 'جامعة وهران 2',
+    name: 'جامعة وهران 1 أحمد بن بلة',
     colleges: [
-      { id: 'coll3', name: 'كلية الطب', specializations: ['الطب العام', 'جراحة الأسنان'] },
-      { id: 'coll4', name: 'كلية التكنولوجيا', specializations: ['علوم الحاسوب', 'الهندسة الكهربائية'] },
+      { id: 'coll2_1', name: 'كلية العلوم الدقيقة والتطبيقية', specializations: ['الفيزياء التطبيقية', 'الكيمياء الصناعية', 'الجيولوجيا'] },
+      { id: 'coll2_2', name: 'كلية الآداب والفنون', specializations: ['اللغة العربية وآدابها', 'اللغة الإنجليزية', 'تاريخ وفنون'] },
+      { id: 'coll2_3', name: 'كلية العلوم الاقتصادية والتجارية وعلوم التسيير', specializations: ['علوم مالية ومحاسبة', 'إدارة الأعمال', 'تسويق'] },
+    ],
+  },
+  {
+    id: 'uni3',
+    name: 'جامعة العلوم والتكنولوجيا هواري بومدين (USTHB)',
+    colleges: [
+      { id: 'coll3_1', name: 'كلية الرياضيات', specializations: ['رياضيات', 'إحصاء', 'بحث عملي'] },
+      { id: 'coll3_2', name: 'كلية الإعلام الآلي', specializations: ['هندسة برمجيات', 'ذكاء اصطناعي', 'شبكات واتصالات'] },
+      { id: 'coll3_3', name: 'كلية الهندسة المدنية', specializations: ['هندسة مدنية', 'هندسة مائية', 'هندسة معمارية'] },
+      { id: 'coll3_4', name: 'كلية الإلكترونيك و الكهروميكانيك', specializations: ['إلكترونيك', 'كهرباء', 'ميكانيك'] },
+    ],
+  },
+  {
+    id: 'uni4',
+    name: 'جامعة قسنطينة 1 الإخوة منتوري',
+    colleges: [
+      { id: 'coll4_1', name: 'كلية الطب', specializations: ['الطب البشري', 'طب الأسنان', 'الصيدلة'] },
+      { id: 'coll4_2', name: 'كلية العلوم والتكنولوجيا', specializations: ['هندسة كهربائية', 'هندسة ميكانيكية', 'هندسة كيميائية'] },
+      { id: 'coll4_3', name: 'كلية الحقوق والعلوم السياسية', specializations: ['القانون الخاص', 'القانون العام', 'علوم سياسية'] },
+    ],
+  },
+  {
+    id: 'uni5',
+    name: 'جامعة باجي مختار عنابة',
+    colleges: [
+      { id: 'coll5_1', name: 'كلية التكنولوجيا', specializations: ['هندسة صناعية', 'هندسة الطرائق', 'هندسة كهربائية'] },
+      { id: 'coll5_2', name: 'كلية العلوم الاقتصادية والتجارية وعلوم التسيير', specializations: ['اقتصاد كمي', 'إدارة أعمال دولية', 'مالية وبنوك'] },
+      { id: 'coll5_3', name: 'كلية الطب', specializations: ['طب', 'صيدلة', 'جراحة أسنان'] },
+    ],
+  },
+  {
+    id: 'uni6',
+    name: 'جامعة ابن خلدون تيارت',
+    colleges: [
+      { id: 'coll6_1', name: 'كلية العلوم الإنسانية والاجتماعية', specializations: ['علم النفس', 'علم الاجتماع', 'تاريخ'] },
+      { id: 'coll6_2', name: 'كلية العلوم الدقيقة والإعلام الآلي', specializations: ['رياضيات وإعلام آلي', 'فيزياء', 'كيمياء'] },
+      { id: 'coll6_3', name: 'كلية الآداب واللغات والفنون', specializations: ['لغة عربية', 'لغة فرنسية', 'لغة إنجليزية'] },
     ],
   },
 ];
@@ -36,7 +75,7 @@ export const MOCK_PROFESSORS: User[] = [
     name: 'أحمد علي',
     profilePic: 'https://picsum.photos/100/100?random=1',
     role: UserRole.Professor,
-    university: 'جامعة الجزائر 1',
+    university: 'جامعة الجزائر 1 بن يوسف بن خدة',
     college: 'كلية العلوم',
     stars: 10,
   },
@@ -46,9 +85,19 @@ export const MOCK_PROFESSORS: User[] = [
     name: 'فاطمة الزهراء',
     profilePic: 'https://picsum.photos/100/100?random=2',
     role: UserRole.Professor,
-    university: 'جامعة وهران 2',
+    university: 'جامعة وهران 1 أحمد بن بلة',
     college: 'كلية الطب',
     stars: 15,
+  },
+  {
+    id: 'prof3',
+    email: 'prof3@example.com',
+    name: 'خالد بن طاهر',
+    profilePic: 'https://picsum.photos/100/100?random=10',
+    role: UserRole.Professor,
+    university: 'جامعة العلوم والتكنولوجيا هواري بومدين (USTHB)',
+    college: 'كلية الإعلام الآلي',
+    stars: 20,
   },
 ];
 
@@ -59,7 +108,7 @@ export const MOCK_STUDENTS: User[] = [
     name: 'سارة خالد',
     profilePic: 'https://picsum.photos/100/100?random=3',
     role: UserRole.Student,
-    university: 'جامعة الجزائر 1',
+    university: 'جامعة الجزائر 1 بن يوسف بن خدة',
     college: 'كلية العلوم',
   },
   {
@@ -68,8 +117,17 @@ export const MOCK_STUDENTS: User[] = [
     name: 'محمد أمين',
     profilePic: 'https://picsum.photos/100/100?random=4',
     role: UserRole.Student,
-    university: 'جامعة وهران 2',
+    university: 'جامعة وهران 1 أحمد بن بلة',
     college: 'كلية الطب',
+  },
+  {
+    id: 'stud3',
+    email: 'stud3@example.com',
+    name: 'ليلى مراد',
+    profilePic: 'https://picsum.photos/100/100?random=11',
+    role: UserRole.Student,
+    university: 'جامعة العلوم والتكنولوجيا هواري بومدين (USTHB)',
+    college: 'كلية الإعلام الآلي',
   },
 ];
 
@@ -80,8 +138,8 @@ export const MOCK_DEMO_STUDENT: User = {
   name: 'طالب تجريبي',
   profilePic: 'https://picsum.photos/100/100?random=99',
   role: UserRole.Student,
-  university: 'جامعة الجزائر 1',
-  college: 'كلية العلوم',
+  university: 'جامعة ابن خلدون تيارت',
+  college: 'كلية العلوم الإنسانية والاجتماعية',
 };
 
 export const MOCK_DEMO_PROFESSOR: User = {
@@ -90,8 +148,8 @@ export const MOCK_DEMO_PROFESSOR: User = {
   name: 'أستاذ تجريبي',
   profilePic: 'https://picsum.photos/100/100?random=98',
   role: UserRole.Professor,
-  university: 'جامعة وهران 2',
-  college: 'كلية الطب',
+  university: 'جامعة ابن خلدون تيارت',
+  college: 'كلية العلوم الدقيقة والإعلام الآلي',
   stars: 20,
 };
 
@@ -102,7 +160,7 @@ export const MOCK_CHANNELS: Channel[] = [
     name: 'الرياضيات',
     professorId: 'prof1',
     professorName: 'أحمد علي',
-    university: 'جامعة الجزائر 1',
+    university: 'جامعة الجزائر 1 بن يوسف بن خدة',
     college: 'كلية العلوم',
     content: [
       { id: 'cont1', type: 'pdf', url: 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf', fileName: 'مقدمة في الجبر.pdf' },
@@ -121,7 +179,7 @@ export const MOCK_CHANNELS: Channel[] = [
     name: 'الفيزياء',
     professorId: 'prof1',
     professorName: 'أحمد علي',
-    university: 'جامعة الجزائر 1',
+    university: 'جامعة الجزائر 1 بن يوسف بن خدة',
     college: 'كلية العلوم',
     content: [
       { id: 'cont4', type: 'pdf', url: 'https://www.africau.edu/images/default/sample.pdf', fileName: 'ميكانيكا الكم.pdf' },
@@ -134,10 +192,10 @@ export const MOCK_CHANNELS: Channel[] = [
   },
   {
     id: 'chan3',
-    name: 'الطب العام',
+    name: 'الطب البشري',
     professorId: 'prof2',
     professorName: 'فاطمة الزهراء',
-    university: 'جامعة وهران 2',
+    university: 'جامعة وهران 1 أحمد بن بلة',
     college: 'كلية الطب',
     content: [
       { id: 'cont5', type: 'image', url: 'https://picsum.photos/800/600?random=7' },
@@ -145,6 +203,35 @@ export const MOCK_CHANNELS: Channel[] = [
     chatMessages: [],
     googleMeetLink: 'https://meet.google.com/jkl-mno-pqr',
     subscribers: ['stud2', 'demo_stud'], // Add demo student
+  },
+  {
+    id: 'chan4',
+    name: 'هندسة برمجيات',
+    professorId: 'prof3',
+    professorName: 'خالد بن طاهر',
+    university: 'جامعة العلوم والتكنولوجيا هواري بومدين (USTHB)',
+    college: 'كلية الإعلام الآلي',
+    content: [
+      { id: 'cont6', type: 'pdf', url: 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf', fileName: 'أساسيات هندسة البرمجيات.pdf' },
+      { id: 'cont7', type: 'video', url: 'https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4', thumbnail: 'https://picsum.photos/300/200?random=12' },
+    ],
+    chatMessages: [
+      { id: 'msg4', senderId: 'prof3', senderName: 'خالد بن طاهر', text: 'أهلاً بطلاب هندسة البرمجيات.', timestamp: new Date(Date.now() - 1200000) },
+    ],
+    googleMeetLink: 'https://meet.google.com/stu-vwx-yza',
+    subscribers: ['stud3'],
+  },
+  {
+    id: 'chan5',
+    name: 'علم النفس',
+    professorId: 'demo_prof', // Demo professor teaching
+    professorName: 'أستاذ تجريبي',
+    university: 'جامعة ابن خلدون تيارت',
+    college: 'كلية العلوم الإنسانية والاجتماعية',
+    content: [],
+    chatMessages: [],
+    googleMeetLink: 'https://meet.google.com/mnb-vfr-cde',
+    subscribers: [],
   },
 ];
 

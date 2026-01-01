@@ -132,7 +132,7 @@ const StudentDashboard: React.FC<StudentDashboardProps> = ({
       {error && <p className="text-red-500 mb-4">{error}</p>}
       {message && <p className="text-green-600 mb-4">{message}</p>}
 
-      <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md mb-8">
+      <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg mb-8">
         <h3 className="text-xl font-semibold mb-4 text-gray-900 dark:text-gray-100">اختر جامعتك وكليتك</h3>
         <Select
           id="select-university"
@@ -167,7 +167,7 @@ const StudentDashboard: React.FC<StudentDashboardProps> = ({
           {channels.map((channel) => (
             <div
               key={channel.id}
-              className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 relative flex flex-col justify-between cursor-pointer hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
+              className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 relative flex flex-col justify-between cursor-pointer hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
             >
               <div>
                 <h4 className="text-xl font-bold text-green-600 dark:text-green-400 mb-2">{channel.name}</h4>

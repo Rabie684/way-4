@@ -66,7 +66,7 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl w-full max-w-2xl p-6 md:p-8 relative overflow-y-auto max-h-[90vh]">
+      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-2xl w-full max-w-2xl p-6 md:p-8 relative overflow-y-auto max-h-[90vh]">
         <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-6 text-center">إعدادات الملف الشخصي</h2>
 
         {loading && <LoadingSpinner />}
@@ -74,7 +74,7 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({
         {message && <p className="text-green-600 text-center mb-4">{message}</p>}
 
         {/* Profile Update Section */}
-        <form onSubmit={handleUpdateProfile} className="mb-8 p-4 border border-gray-200 dark:border-gray-700 rounded-md">
+        <form onSubmit={handleUpdateProfile} className="mb-8 p-4 border border-gray-200 dark:border-gray-700 rounded-lg shadow-inner">
           <h3 className="text-xl font-semibold mb-4 text-gray-900 dark:text-gray-100">تعديل الملف الشخصي</h3>
           <div className="flex flex-col items-center mb-6">
             <img
@@ -105,7 +105,7 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({
         </form>
 
         {/* Settings Section */}
-        <div className="p-4 border border-gray-200 dark:border-gray-700 rounded-md">
+        <div className="p-4 border border-gray-200 dark:border-gray-700 rounded-lg shadow-inner">
           <h3 className="text-xl font-semibold mb-4 text-gray-900 dark:text-gray-100">الإعدادات العامة</h3>
           <Select
             id="language"

@@ -140,7 +140,7 @@ const ChannelDetail: React.FC<ChannelDetailProps> = ({ channel, currentUser, onB
         {activeTab === 'content' && (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 h-full">
             {/* Content Display */}
-            <div className="flex flex-col bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 overflow-y-auto custom-scrollbar">
+            <div className="flex flex-col bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 overflow-y-auto custom-scrollbar">
               <h3 className="text-xl font-semibold mb-4 text-gray-900 dark:text-gray-100">المحتوى التعليمي</h3>
               <div className="space-y-4 flex-1">
                 {channel.content.length === 0 ? (
@@ -195,7 +195,7 @@ const ChannelDetail: React.FC<ChannelDetailProps> = ({ channel, currentUser, onB
             <div className="flex flex-col space-y-6">
               {/* Professor Content Upload Form */}
               {isProfessor && (
-                <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+                <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
                   <h3 className="text-xl font-semibold mb-4 text-gray-900 dark:text-gray-100">نشر محتوى جديد</h3>
                   <form onSubmit={handlePublishContent}>
                     <Select

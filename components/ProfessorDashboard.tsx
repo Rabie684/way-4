@@ -102,7 +102,7 @@ const ProfessorDashboard: React.FC<ProfessorDashboardProps> = ({ currentUser, on
       </Button>
 
       {showCreateChannelForm && (
-        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md mb-8">
+        <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg mb-8">
           <h3 className="text-xl font-semibold mb-4 text-gray-900 dark:text-gray-100">إنشاء قناة</h3>
           <form onSubmit={handleCreateChannel}>
             <Select
@@ -153,7 +153,7 @@ const ProfessorDashboard: React.FC<ProfessorDashboardProps> = ({ currentUser, on
           {professorChannels.map((channel) => (
             <div
               key={channel.id}
-              className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 cursor-pointer hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
+              className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 cursor-pointer hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
               onClick={() => onSelectChannel(channel)}
             >
               <h4 className="text-xl font-bold text-green-600 dark:text-green-400 mb-2">{channel.name}</h4>

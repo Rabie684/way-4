@@ -1,9 +1,9 @@
 import { User, UserRole } from '../types';
 import { MOCK_PROFESSORS, MOCK_STUDENTS, MOCK_DEMO_PROFESSOR, MOCK_DEMO_STUDENT } from '../constants';
 
-// Initialize mock data including demo users
-const ALL_MOCK_PROFESSORS = [...MOCK_PROFESSORS, MOCK_DEMO_PROFESSOR];
-const ALL_MOCK_STUDENTS = [...MOCK_STUDENTS, MOCK_DEMO_STUDENT];
+// Initialize mock data including demo users, ensuring no duplicates
+const ALL_MOCK_PROFESSORS = [...MOCK_PROFESSORS, MOCK_DEMO_PROFESSOR].filter((v, i, a) => a.findIndex(t => (t.id === v.id || t.email === v.email)) === i);
+const ALL_MOCK_STUDENTS = [...MOCK_STUDENTS, MOCK_DEMO_STUDENT].filter((v, i, a) => a.findIndex(t => (t.id === v.id || t.email === v.email)) === i);
 
 // This is a mock authentication service. In a real application, this would interact with a backend.
 export const authService = {

@@ -36,7 +36,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ messages, currentUser, onSendMe
   };
 
   return (
-    <div className="flex flex-col h-full bg-white dark:bg-gray-800 rounded-lg shadow-md">
+    <div className="flex flex-col h-full bg-white dark:bg-gray-800 rounded-xl shadow-lg">
       <div className="p-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-700">
         <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100">{chatTitle}</h3>
       </div>
@@ -51,7 +51,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ messages, currentUser, onSendMe
               className={`flex ${message.senderId === currentUser.id ? 'justify-end' : 'justify-start'}`}
             >
               <div
-                className={`max-w-[70%] p-3 rounded-lg ${
+                className={`max-w-[70%] p-3 rounded-2xl ${ // Larger rounded corners
                   message.senderId === currentUser.id
                     ? 'bg-green-600 text-white shadow-md'
                     : 'bg-gray-200 text-gray-900 dark:bg-gray-700 dark:text-gray-100 shadow-sm'

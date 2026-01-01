@@ -6,7 +6,8 @@ import { authService } from './authService';
 // we should re-derive it or ensure constants are fully initialized.
 // For this mock, we'll re-include demo professor if not already present,
 // but in a real app, this would be handled by a single source of truth for user data.
-const ALL_MOCK_PROFESSORS = [...MOCK_PROFESSORS, MOCK_DEMO_PROFESSOR].filter((v, i, a) => a.findIndex(t => (t.id === v.id)) === i);
+// Ensure de-duplication when combining
+const ALL_MOCK_PROFESSORS = [...MOCK_PROFESSORS, MOCK_DEMO_PROFESSOR].filter((v, i, a) => a.findIndex(t => (t.id === v.id || t.email === v.email)) === i);
 
 
 // This is a mock service. In a real application, this would interact with a backend.
