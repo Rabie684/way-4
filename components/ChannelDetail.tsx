@@ -153,7 +153,7 @@ const ChannelDetail: React.FC<ChannelDetailProps> = ({ channel, currentUser, onB
                     >
                       {item.type === 'pdf' && (
                         <div className="flex items-center">
-                          <span className="text-green-500 text-2xl mr-2">📄</span>
+                          <span className="emoji-icon-shine text-green-500 text-2xl mr-2">📄</span>
                           <a href={item.url} target="_blank" rel="noopener noreferrer" className="text-green-600 dark:text-green-400 hover:underline">
                             {item.fileName || 'ملف PDF'}
                           </a>
@@ -161,7 +161,7 @@ const ChannelDetail: React.FC<ChannelDetailProps> = ({ channel, currentUser, onB
                       )}
                       {item.type === 'image' && (
                         <div className="flex items-center">
-                          <span className="text-green-500 text-2xl mr-2">🖼️</span>
+                          <span className="emoji-icon-shine text-green-500 text-2xl mr-2">🖼️</span>
                           <a href={item.url} target="_blank" rel="noopener noreferrer" className="text-green-600 dark:text-green-400 hover:underline">
                             مشاهدة الصورة
                           </a>
@@ -169,7 +169,7 @@ const ChannelDetail: React.FC<ChannelDetailProps> = ({ channel, currentUser, onB
                       )}
                       {item.type === 'video' && (
                         <div className="flex flex-col items-start">
-                          <span className="text-green-500 text-2xl mr-2">🎥</span>
+                          <span className="emoji-icon-shine text-green-500 text-2xl mr-2">🎥</span>
                           <video controls src={item.url} poster={item.thumbnail} className="max-w-xs h-auto rounded-md mb-2"></video>
                           <a href={item.url} target="_blank" rel="noopener noreferrer" className="text-green-600 dark:text-green-400 hover:underline">
                             مشاهدة الفيديو

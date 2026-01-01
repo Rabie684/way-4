@@ -171,7 +171,9 @@ const JarvisAssistant: React.FC<JarvisAssistantProps> = ({ currentUser, currentS
           <Button onClick={onBack} variant="secondary" size="sm" className="ml-2">
             {'<'} عودة
           </Button>
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mr-4">🤖 مساعد جارفس</h2>
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mr-4">
+            <span className="emoji-icon-shine text-green-500 text-2xl mr-2">🤖</span> مساعد جارفس
+          </h2>
         </div>
       </div>
 

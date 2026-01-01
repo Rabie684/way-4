@@ -38,7 +38,7 @@ const Navbar: React.FC<NavbarProps> = ({
                 الدردشات الخاصة
               </Button>
               <Button variant="ghost" className="text-white" onClick={onNavigateToJarvis}>
-                🤖 مساعد جارفس
+                <span className="emoji-icon-shine mr-2">🤖</span> مساعد جارفس
               </Button>
             </>
           )}
