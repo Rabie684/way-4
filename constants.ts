@@ -68,6 +68,14 @@ export const MOCK_UNIVERSITIES: University[] = [
       { id: 'coll6_3', name: 'كلية الآداب واللغات والفنون', specializations: ['لغة عربية', 'لغة فرنسية', 'لغة إنجليزية'] },
     ],
   },
+  {
+    id: 'uni7', // New university ID
+    name: 'جامعة ابن خلدون ملحقة قصر الشلالة', // New university name
+    colleges: [
+      { id: 'coll7_1', name: 'كلية العلوم', specializations: ['الرياضيات التطبيقية', 'فيزياء المواد', 'علوم الحياة'] },
+      { id: 'coll7_2', name: 'كلية العلوم الاقتصادية و علوم التسيير', specializations: ['محاسبة ومالية', 'إدارة أعمال', 'اقتصاد دولي', 'تسويق'] },
+    ],
+  },
 ];
 
 export const MOCK_PROFESSORS: User[] = [
@@ -140,22 +148,22 @@ export const MOCK_STUDENTS: User[] = [
 export const MOCK_DEMO_STUDENT: User = {
   id: 'demo_stud',
   email: 'demo.student@way.dz',
-  name: 'طالب تجريبي',
+  name: 'حمر العين ربيع',
   profilePic: 'https://picsum.photos/100/100?random=99',
   role: UserRole.Student,
-  university: 'جامعة ابن خلدون تيارت',
-  college: 'كلية العلوم الإنسانية والاجتماعية',
+  university: 'جامعة ابن خلدون ملحقة قصر الشلالة', // Updated university
+  college: 'كلية العلوم الاقتصادية و علوم التسيير', // Updated college
   balance: 2000, // Initial balance for demo student
 };
 
 export const MOCK_DEMO_PROFESSOR: User = {
   id: 'demo_prof',
   email: 'demo.professor@way.dz',
-  name: 'أستاذ تجريبي',
+  name: 'بن الطاهر بختة',
   profilePic: 'https://picsum.photos/100/100?random=98',
   role: UserRole.Professor,
-  university: 'جامعة ابن خلدون تيارت',
-  college: 'كلية العلوم الدقيقة والإعلام الآلي',
+  university: 'جامعة ابن خلدون ملحقة قصر الشلالة', // Updated university
+  college: 'كلية العلوم الاقتصادية و علوم التسيير', // Updated college
   stars: 20,
 };
 
@@ -229,11 +237,11 @@ export const MOCK_CHANNELS: Channel[] = [
   },
   {
     id: 'chan5',
-    name: 'علم النفس',
+    name: 'إدارة أعمال', // Specialization name from the new college
     professorId: 'demo_prof', // Demo professor teaching
-    professorName: 'أستاذ تجريبي',
-    university: 'جامعة ابن خلدون تيارت',
-    college: 'كلية العلوم الإنسانية والاجتماعية',
+    professorName: 'بن الطاهر بختة',
+    university: 'جامعة ابن خلدون ملحقة قصر الشلالة', // Updated university
+    college: 'كلية العلوم الاقتصادية و علوم التسيير', // Updated college
     content: [],
     chatMessages: [],
     googleMeetLink: 'https://meet.google.com/mnb-vfr-cde',
@@ -255,8 +263,8 @@ export const MOCK_PRIVATE_CHATS: PrivateChat[] = [
     id: 'pc_demo_prof_stud',
     participants: ['demo_prof', 'demo_stud'],
     messages: [
-      { id: 'dpmsg1', senderId: 'demo_prof', senderName: 'أستاذ تجريبي', text: 'مرحباً بالطالب التجريبي!', timestamp: new Date(Date.now() - 200000) },
-      { id: 'dpmsg2', senderId: 'demo_stud', senderName: 'طالب تجريبي', text: 'مرحباً أستاذ تجريبي.', timestamp: new Date(Date.now() - 100000) },
+      { id: 'dpmsg1', senderId: 'demo_prof', senderName: 'بن الطاهر بختة', text: 'مرحباً بالطالب التجريبي!', timestamp: new Date(Date.now() - 200000) },
+      { id: 'dpmsg2', senderId: 'demo_stud', senderName: 'حمر العين ربيع', text: 'مرحباً أستاذ تجريبي.', timestamp: new Date(Date.now() - 100000) },
     ],
   },
 ];
