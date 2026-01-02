@@ -201,7 +201,7 @@ const App: React.FC = () => {
             onSelectChannel={handleSelectChannel}
             channels={channels}
             setChannels={setChannels}
-            setCurrentUser={setCurrentUser}
+            setCurrentUser={setCurrentUser} // Pass setCurrentUser to StudentDashboard
           />
         )}
         {currentView === 'channelDetail' && selectedChannel && (

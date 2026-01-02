@@ -18,6 +18,7 @@ export interface User {
   university?: string;
   college?: string;
   stars?: number; // Only for Professor
+  balance?: number; // New: For student wallet
 }
 
 export interface ChannelContent {

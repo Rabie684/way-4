@@ -1,7 +1,9 @@
 import { Language, UserRole, User, Channel, University, PrivateChat } from './types';
 
-// Gemini API Key: Set this as an environment variable `API_KEY` for production.
-// For local development without env variable, replace 'YOUR_GEMINI_API_KEY_HERE' with your actual key.
+// Gemini API Key: It is HIGHLY recommended to obtain this from an environment variable (e.g., `process.env.API_KEY`)
+// for security. DO NOT hardcode your API key in client-side code for production.
+// For local development or static PWA builds where `process.env` might not be injected,
+// replace 'YOUR_GEMINI_API_KEY_HERE' with your actual key for testing, but be aware of security implications.
 export const API_KEY = process.env.API_KEY || 'YOUR_GEMINI_API_KEY_HERE';
 
 export const LANGUAGES = [
@@ -110,6 +112,7 @@ export const MOCK_STUDENTS: User[] = [
     role: UserRole.Student,
     university: 'جامعة الجزائر 1 بن يوسف بن خدة',
     college: 'كلية العلوم',
+    balance: 500, // Initial balance
   },
   {
     id: 'stud2',
@@ -119,6 +122,7 @@ export const MOCK_STUDENTS: User[] = [
     role: UserRole.Student,
     university: 'جامعة وهران 1 أحمد بن بلة',
     college: 'كلية الطب',
+    balance: 750, // Initial balance
   },
   {
     id: 'stud3',
@@ -128,6 +132,7 @@ export const MOCK_STUDENTS: User[] = [
     role: UserRole.Student,
     university: 'جامعة العلوم والتكنولوجيا هواري بومدين (USTHB)',
     college: 'كلية الإعلام الآلي',
+    balance: 1000, // Initial balance
   },
 ];
 
@@ -140,6 +145,7 @@ export const MOCK_DEMO_STUDENT: User = {
   role: UserRole.Student,
   university: 'جامعة ابن خلدون تيارت',
   college: 'كلية العلوم الإنسانية والاجتماعية',
+  balance: 2000, // Initial balance for demo student
 };
 
 export const MOCK_DEMO_PROFESSOR: User = {

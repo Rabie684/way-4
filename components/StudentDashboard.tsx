@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { User, Channel, University, College } from '../types';
+import { User, Channel, University, College, UserRole } from '../types';
 import { channelService } from '../services/channelService';
 import { MOCK_UNIVERSITIES, SUBSCRIPTION_PRICE, MOCK_CHANNELS, MOCK_PROFESSORS } from '../constants';
 import Button from './Button';
 import Select from './Select';
 import LoadingSpinner from './LoadingSpinner';
 import { authService } from '../services/authService';
+// FIX: Import the Input component
+import Input from './Input';
 
 interface StudentDashboardProps {
   currentUser: User;
@@ -27,6 +29,8 @@ const StudentDashboard: React.FC<StudentDashboardProps> = ({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [message, setMessage] = useState('');
+  const [showAddFundsModal, setShowAddFundsModal] = useState(false);
+  const [fundsToAdd, setFundsToAdd] = useState(100);
 
   const universitiesOptions = MOCK_UNIVERSITIES.map(uni => ({ value: uni.id, label: uni.name }));
   const selectedUniversity = MOCK_UNIVERSITIES.find(uni => uni.id === selectedUniversityId);
@@ -86,8 +90,12 @@ const StudentDashboard: React.FC<StudentDashboardProps> = ({
     setError('');
     setMessage('');
     try {
-      // In a real app, this would involve SMS payment gateway.
-      // Here, we simulate success and update the channel/professor stars.
+      if (currentUser.balance === undefined || currentUser.balance < SUBSCRIPTION_PRICE) {
+        setError('رصيدك غير كافٍ للاشتراك في هذه القناة. يرجى شحن المحفظة.');
+        setLoading(false);
+        return;
+      }
+
       const updatedChannel = await channelService.subscribeToChannel(channelId, currentUser.id);
       
       // Update channels state in App.tsx
@@ -95,33 +103,46 @@ const StudentDashboard: React.FC<StudentDashboardProps> = ({
         prevChannels.map(c => (c.id === channelId ? updatedChannel : c))
       );
       
-      // Force update currentUser to reflect professor's stars if current user is that professor (unlikely here)
-      // or if it's the student themselves, though student profile doesn't have stars.
-      // More importantly, the professor's stars are updated in MOCK_PROFESSORS.
-      // If the professor logs in, their stars would be correct.
-      const updatedProfessor = MOCK_UNIVERSITIES.flatMap(u => u.colleges.flatMap(c => MOCK_CHANNELS.filter(ch => ch.id === channelId && ch.professorId)))
-                                  .map(ch => MOCK_PROFESSORS.find(p => p.id === ch.professorId))
-                                  .filter((p): p is User => p !== undefined)[0];
-
-      if (updatedProfessor) {
-        // If the current user happens to be the professor of this channel (unlikely for a student dashboard action),
-        // update their local state too.
-        // Or if we need to show updated stars for professors on the channel card, we'd refetch professors.
-      }
-
+      // Update current user balance in App.tsx state
+      const updatedUser = { ...currentUser, balance: currentUser.balance - SUBSCRIPTION_PRICE };
+      setCurrentUser(updatedUser); // Update parent state and local storage via authService.updateUser in channelService
 
       setMessage(`تم الاشتراك في القناة بنجاح! تم خصم ${SUBSCRIPTION_PRICE} دج من رصيدك.`);
-      // Refetch channels to ensure updated subscriber count is visible
-      fetchAvailableChannels();
-    } catch (err) {
-      setError('فشل الاشتراك في القناة. يرجى المحاولة مرة أخرى.');
+      fetchAvailableChannels(); // Refetch channels to ensure updated subscriber count is visible
+    } catch (err: any) {
+      setError(err.message || 'فشل الاشتراك في القناة. يرجى المحاولة مرة أخرى.');
       console.error(err);
     } finally {
       setLoading(false);
     }
   };
 
+  const handleAddFunds = async () => {
+    if (fundsToAdd <= 0) {
+      setError('الرجاء إدخال مبلغ صحيح.');
+      return;
+    }
+    setLoading(true);
+    setError('');
+    setMessage('');
+    try {
+      const updatedUser = { ...currentUser, balance: (currentUser.balance || 0) + fundsToAdd };
+      const result = await authService.updateUser(updatedUser);
+      setCurrentUser(result);
+      setMessage(`تم شحن المحفظة بنجاح! تم إضافة ${fundsToAdd} دج.`);
+      setFundsToAdd(100); // Reset for next time
+      setShowAddFundsModal(false);
+    } catch (err) {
+      setError('فشل شحن المحفظة.');
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+
   const isSubscribed = (channel: Channel) => channel.subscribers.includes(currentUser.id);
+  const canSubscribe = (currentUser.balance !== undefined && currentUser.balance >= SUBSCRIPTION_PRICE);
 
   return (
     <div className="p-6 md:p-8">
@@ -131,6 +152,41 @@ const StudentDashboard: React.FC<StudentDashboardProps> = ({
 
       {error && <p className="text-red-500 mb-4">{error}</p>}
       {message && <p className="text-green-600 mb-4">{message}</p>}
+
+      <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg mb-8 flex flex-col sm:flex-row justify-between items-center">
+        <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-4 sm:mb-0">
+          رصيد المحفظة: <span className="text-green-600 dark:text-green-400">{currentUser.balance !== undefined ? currentUser.balance.toFixed(2) : 'N/A'} دج</span>
+        </h3>
+        <Button onClick={() => setShowAddFundsModal(true)} variant="primary">
+          شحن المحفظة
+        </Button>
+      </div>
+
+      {showAddFundsModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-2xl w-full max-w-md p-6">
+            <h3 className="text-xl font-semibold mb-4 text-gray-900 dark:text-gray-100">شحن المحفظة</h3>
+            <Input
+              id="fundsToAdd"
+              label="المبلغ (دج)"
+              type="number"
+              value={fundsToAdd}
+              onChange={(e) => setFundsToAdd(Number(e.target.value))}
+              min="1"
+              required
+            />
+            <div className="flex justify-end space-x-2 space-x-reverse mt-4">
+              <Button onClick={() => setShowAddFundsModal(false)} variant="secondary">
+                إلغاء
+              </Button>
+              <Button onClick={handleAddFunds} disabled={loading}>
+                {loading ? 'جاري الشحن...' : 'شحن'}
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+
 
       <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg mb-8">
         <h3 className="text-xl font-semibold mb-4 text-gray-900 dark:text-gray-100">اختر جامعتك وكليتك</h3>
@@ -181,9 +237,12 @@ const StudentDashboard: React.FC<StudentDashboardProps> = ({
                     عرض القناة
                   </Button>
                 ) : (
-                  <Button onClick={() => handleSubscribe(channel.id)} fullWidth disabled={loading}>
+                  <Button onClick={() => handleSubscribe(channel.id)} fullWidth disabled={loading || !canSubscribe}>
                     {loading ? 'جاري الاشتراك...' : `اشترك (${SUBSCRIPTION_PRICE} دج)`}
                   </Button>
+                )}
+                {!isSubscribed(channel) && !canSubscribe && currentUser.balance !== undefined && (
+                  <p className="text-red-500 text-sm mt-2 text-center">رصيدك غير كافٍ ({currentUser.balance.toFixed(2)} دج)</p>
                 )}
               </div>
             </div>

@@ -1,5 +1,5 @@
 import { Channel, ChannelContent, Message, PrivateChat, User, UserRole } from '../types';
-import { MOCK_CHANNELS, MOCK_PRIVATE_CHATS, MOCK_PROFESSORS, MOCK_DEMO_PROFESSOR } from '../constants';
+import { MOCK_CHANNELS, MOCK_PRIVATE_CHATS, MOCK_PROFESSORS, MOCK_DEMO_PROFESSOR, SUBSCRIPTION_PRICE } from '../constants';
 import { authService } from './authService';
 
 // To ensure MOCK_PROFESSORS used here is up-to-date with potential demo users,
@@ -86,8 +86,23 @@ export const channelService = {
     if (channelIndex === -1) {
       throw new Error('Channel not found');
     }
+
+    // Get the current student data to check balance
+    const student = authService.getCurrentUser();
+    if (!student || student.id !== studentId || student.role !== UserRole.Student || student.balance === undefined) {
+        throw new Error('Student data invalid or not logged in.');
+    }
+
+    if (student.balance < SUBSCRIPTION_PRICE) {
+        throw new Error('Insufficient balance to subscribe to this channel.');
+    }
+
     if (!MOCK_CHANNELS[channelIndex].subscribers.includes(studentId)) {
       MOCK_CHANNELS[channelIndex].subscribers.push(studentId);
+
+      // Deduct price from student's balance
+      student.balance -= SUBSCRIPTION_PRICE;
+      await authService.updateUser(student); // Persist updated student balance
 
       // Increment professor's stars
       const professorIndex = ALL_MOCK_PROFESSORS.findIndex(p => p.id === MOCK_CHANNELS[channelIndex].professorId); // Use ALL_MOCK_PROFESSORS

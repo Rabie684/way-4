@@ -15,6 +15,10 @@ export const authService = {
       user = ALL_MOCK_PROFESSORS.find(u => u.email === email);
     } else {
       user = ALL_MOCK_STUDENTS.find(u => u.email === email);
+      // Ensure student has a balance, default to 0 if not set (for older mock data)
+      if (user && user.role === UserRole.Student && user.balance === undefined) {
+          user.balance = 0;
+      }
     }
 
     if (user) {
@@ -43,6 +47,7 @@ export const authService = {
       university,
       college,
       ...(role === UserRole.Professor && { stars: 0 }),
+      ...(role === UserRole.Student && { balance: 0 }), // Initialize balance for new students
     };
 
     if (role === UserRole.Professor) {
@@ -62,7 +67,12 @@ export const authService = {
 
   getCurrentUser: (): User | null => {
     const userJson = localStorage.getItem('currentUser');
-    return userJson ? (JSON.parse(userJson) as User) : null;
+    const user: User | null = userJson ? (JSON.parse(userJson) as User) : null;
+    // Ensure balance is present for students when retrieving from localStorage
+    if (user && user.role === UserRole.Student && user.balance === undefined) {
+        user.balance = 0;
+    }
+    return user;
   },
 
   updateUser: async (updatedUser: User): Promise<User> => {
