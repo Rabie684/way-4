@@ -8,9 +8,12 @@ export const geminiService = {
     targetLanguage: Language, // User's preferred display language
     currentSettings: ProfileSettings, // Pass profile settings to determine model response language
   ): Promise<{ text: string; audioBase64?: string; sources: string[] }> => {
+    // Define the user-friendly fallback message
+    const friendlyFallbackMessage = "رانا نخدمو باش يكون Way أحسن مكان أكاديمي ليك، شكراً على صبرك معايا. تقدر تتصفح قنوات الأساتذة والدروس حالياً، ريثما يكتمل نظام الدردشة الذكي.";
+
     if (!API_KEY || API_KEY === 'YOUR_GEMINI_API_KEY_HERE') {
-      console.warn("Gemini API key is not configured. Jarvis will be limited.");
-      return { text: `[Jarvis Disabled: Please set API_KEY in constants.ts or via environment variables]`, sources: [] };
+      console.warn("Gemini API key is not configured. Jarvis will return a friendly fallback message.");
+      return { text: friendlyFallbackMessage, sources: [] };
     }
 
     // Determine the desired output language for Jarvis's text response
@@ -96,9 +99,9 @@ export const geminiService = {
 
     } catch (error) {
       console.error("خطأ في معالجة طلب جارفس:", error);
-      // More detailed error message for better user experience
+      // Return the friendly fallback message on API errors
       return {
-        text: `عذراً، حدث خطأ أثناء معالجة طلبك بواسطة جارفس. قد تكون المشكلة في الاتصال بالخدمة أو في مفتاح API. التفاصيل: ${error instanceof Error ? error.message : String(error)}.`,
+        text: friendlyFallbackMessage,
         sources: [],
       };
     }

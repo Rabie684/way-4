@@ -8,7 +8,9 @@ interface NavbarProps {
   onShowProfileSettings: () => void;
   onNavigateToDashboard: () => void;
   onNavigateToPrivateChats: () => void;
-  onNavigateToJarvis: () => void; // New prop for Jarvis navigation
+  onNavigateToJarvis: () => void;
+  deferredPrompt: Event | null; // New prop for PWA install prompt
+  onInstallPWA: () => void; // New prop for PWA install handler
 }
 
 const Navbar: React.FC<NavbarProps> = ({
@@ -17,7 +19,9 @@ const Navbar: React.FC<NavbarProps> = ({
   onShowProfileSettings,
   onNavigateToDashboard,
   onNavigateToPrivateChats,
-  onNavigateToJarvis, // New prop
+  onNavigateToJarvis,
+  deferredPrompt, // Use new prop
+  onInstallPWA, // Use new prop
 }) => {
   return (
     <nav className="bg-green-700 dark:bg-green-900 p-4 shadow-lg sticky top-0 z-10">
@@ -46,6 +50,11 @@ const Navbar: React.FC<NavbarProps> = ({
 
         {currentUser ? (
           <div className="flex items-center space-x-4">
+            {deferredPrompt && ( // Show PWA install button if prompt is available and user is logged in
+              <Button onClick={onInstallPWA} variant="secondary" size="sm" className="hidden sm:block">
+                <span role="img" aria-label="install" className="ml-1">⬇️</span> تثبيت التطبيق
+              </Button>
+            )}
             <img
               src={currentUser.profilePic}
               alt="Profile"

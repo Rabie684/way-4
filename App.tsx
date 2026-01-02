@@ -12,11 +12,13 @@ import WelcomeScreen from './components/WelcomeScreen';
 // FIX: Import JarvisAssistant as a default export
 import JarvisAssistant from './components/JarvisAssistant';
 import { MOCK_CHANNELS, MOCK_PRIVATE_CHATS, MOCK_DEMO_STUDENT, MOCK_DEMO_PROFESSOR } from './constants';
+import LoadingSpinner from './components/LoadingSpinner'; // Import LoadingSpinner for the splash screen
 
 type AppView = 'dashboard' | 'channelDetail' | 'profileSettings' | 'privateChats' | 'jarvisAssistant'; // Add new view type
 
 const App: React.FC = () => {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const [isAppLoading, setIsAppLoading] = useState(true); // New state for initial app load (splash screen)
   const [channels, setChannels] = useState<Channel[]>(MOCK_CHANNELS);
   const [privateChats, setPrivateChats] = useState<PrivateChat[]>(MOCK_PRIVATE_CHATS); // All private chats for the user
   const [selectedChannel, setSelectedChannel] = useState<Channel | null>(null);
@@ -26,30 +28,35 @@ const App: React.FC = () => {
     return savedSettings ? JSON.parse(savedSettings) : { isDarkMode: false, language: Language.AR };
   });
 
-  const [showWelcomeScreen, setShowWelcomeScreen] = useState(true); // New state for welcome screen
+  const [showWelcomeScreen, setShowWelcomeScreen] = useState(false); // Changed to false, managed after isAppLoading
   const [authScreenMode, setAuthScreenMode] = useState<'login' | 'register'>('login'); // To control AuthScreen's initial mode
   const [deferredPrompt, setDeferredPrompt] = useState<Event | null>(null); // State to store PWA install prompt
 
   useEffect(() => {
-    // Attempt to load current user from local storage on app start
-    const storedUser = authService.getCurrentUser();
-    if (storedUser) {
-      setCurrentUser(storedUser);
-      setShowWelcomeScreen(false); // If user is logged in, hide welcome screen
-    } else {
-      setShowWelcomeScreen(true); // If no user, show welcome screen
-    }
-
-    // Apply dark mode class to body
+    // Apply dark mode and language settings immediately on render
     if (profileSettings.isDarkMode) {
       document.documentElement.classList.add('dark');
     } else {
       document.documentElement.classList.remove('dark');
     }
-
-    // Set document language attribute
     document.documentElement.lang = profileSettings.language;
-  }, [profileSettings]);
+
+    // Simulate initial app loading delay with a splash screen
+    const splashTimer = setTimeout(() => {
+      setIsAppLoading(false); // End splash screen phase
+
+      // Attempt to load current user after splash screen
+      const storedUser = authService.getCurrentUser();
+      if (storedUser) {
+        setCurrentUser(storedUser);
+        setShowWelcomeScreen(false); // If user is logged in, hide welcome screen
+      } else {
+        setShowWelcomeScreen(true); // If no user, show welcome screen
+      }
+    }, 1500); // Show splash for 1.5 seconds
+
+    return () => clearTimeout(splashTimer); // Cleanup timeout
+  }, [profileSettings]); // Re-run effect if profileSettings changes (for theme/lang updates)
 
   useEffect(() => {
     // Listen for the beforeinstallprompt event for PWA installation
@@ -150,8 +157,18 @@ const App: React.FC = () => {
     }
   }, [deferredPrompt]);
 
-  // Render Welcome Screen first if active
-  if (showWelcomeScreen) {
+  // Render a simple splash screen during initial app loading
+  if (isAppLoading) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen bg-green-700 dark:bg-green-900 text-white">
+        <h1 className="text-5xl md:text-6xl font-extrabold mb-4">جامعتك الرقمية Way</h1>
+        <LoadingSpinner />
+      </div>
+    );
+  }
+
+  // Then Welcome Screen if active and no current user
+  if (showWelcomeScreen && !currentUser) {
     return (
       <div className={`flex flex-col min-h-screen ${profileSettings.isDarkMode ? 'dark' : ''}`}>
         <WelcomeScreen
@@ -165,7 +182,7 @@ const App: React.FC = () => {
     );
   }
 
-  // Then Auth Screen if no current user
+  // Then Auth Screen if no current user (after welcome screen, or if welcome screen was skipped)
   if (!currentUser) {
     return (
       <AuthScreen
@@ -185,6 +202,8 @@ const App: React.FC = () => {
         onNavigateToDashboard={handleBackToDashboard}
         onNavigateToPrivateChats={handleNavigateToPrivateChats}
         onNavigateToJarvis={handleNavigateToJarvis} // Pass Jarvis navigation handler
+        deferredPrompt={deferredPrompt} // Pass deferredPrompt to Navbar
+        onInstallPWA={handleInstallPWA} // Pass onInstallPWA to Navbar
       />
       <main className="flex-1 flex overflow-hidden">
         {currentView === 'dashboard' && currentUser.role === UserRole.Professor && (
