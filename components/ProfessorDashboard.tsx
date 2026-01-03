@@ -28,6 +28,7 @@ const ProfessorDashboard: React.FC<ProfessorDashboardProps> = ({ currentUser, on
     ? selectedUniversity.colleges.map(coll => ({ value: coll.id, label: coll.name }))
     : [];
 
+  // Specializations options are no longer used for channel name input, but kept for potential future use or display
   const specializationsOptions = selectedUniversity?.colleges.find(c => c.id === selectedCollegeId)?.specializations.map(spec => ({ value: spec, label: spec })) || [];
 
 
@@ -54,7 +55,7 @@ const ProfessorDashboard: React.FC<ProfessorDashboardProps> = ({ currentUser, on
     setError('');
     setLoading(true);
 
-    if (!selectedUniversityId || !selectedCollegeId || !newChannelName) {
+    if (!selectedUniversityId || !selectedCollegeId || !newChannelName.trim()) { // Ensure newChannelName is not just whitespace
       setError('الرجاء ملء جميع الحقول.');
       setLoading(false);
       return;
@@ -72,7 +73,7 @@ const ProfessorDashboard: React.FC<ProfessorDashboardProps> = ({ currentUser, on
     try {
       const newChannel = await channelService.createChannel(
         currentUser.id,
-        newChannelName,
+        newChannelName.trim(), // Use trimmed name
         universityName,
         collegeName
       );
@@ -126,14 +127,15 @@ const ProfessorDashboard: React.FC<ProfessorDashboardProps> = ({ currentUser, on
                 required
               />
             )}
-            {selectedCollegeId && (
-                <Select
+            {selectedCollegeId && ( // Show input for channel name after college is selected
+                <Input
                     id="newChannelName"
                     label="اسم القناة (التخصص)"
-                    options={specializationsOptions}
+                    type="text"
                     value={newChannelName}
                     onChange={(e) => setNewChannelName(e.target.value)}
                     required
+                    placeholder="ادخل اسم القناة أو التخصص"
                 />
             )}
             <Button type="submit" fullWidth className="mt-4" disabled={loading}>

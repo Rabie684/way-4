@@ -187,6 +187,7 @@ const App: React.FC = () => {
       <AuthScreen
         onLoginSuccess={handleLoginSuccess}
         initialIsRegister={authScreenMode === 'register'}
+        onCloseAuth={() => setShowWelcomeScreen(true)} // Pass handler to return to WelcomeScreen
       />
     );
   }

@@ -9,9 +9,10 @@ import { MOCK_UNIVERSITIES } from '../constants';
 interface AuthScreenProps {
   onLoginSuccess: (user: User) => void;
   initialIsRegister?: boolean; // New prop
+  onCloseAuth?: () => void; // New prop: handler for closing auth screen
 }
 
-const AuthScreen: React.FC<AuthScreenProps> = ({ onLoginSuccess, initialIsRegister = false }) => {
+const AuthScreen: React.FC<AuthScreenProps> = ({ onLoginSuccess, initialIsRegister = false, onCloseAuth }) => {
   const [isRegister, setIsRegister] = useState(initialIsRegister);
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
@@ -161,6 +162,13 @@ const AuthScreen: React.FC<AuthScreenProps> = ({ onLoginSuccess, initialIsRegist
             {isRegister ? 'تسجيل الدخول' : 'إنشاء حساب'}
           </Button>
         </p>
+        {onCloseAuth && (
+            <div className="mt-4 text-center">
+                <Button variant="secondary" onClick={onCloseAuth} fullWidth>
+                    العودة
+                </Button>
+            </div>
+        )}
       </div>
     </div>
   );
