@@ -88,6 +88,7 @@ export const MOCK_PROFESSORS: User[] = [
     university: 'جامعة الجزائر 1 بن يوسف بن خدة',
     college: 'كلية العلوم',
     stars: 10,
+    deviceToken: undefined,
   },
   {
     id: 'prof2',
@@ -98,6 +99,7 @@ export const MOCK_PROFESSORS: User[] = [
     university: 'جامعة وهران 1 أحمد بن بلة',
     college: 'كلية الطب',
     stars: 15,
+    deviceToken: undefined,
   },
   {
     id: 'prof3',
@@ -108,6 +110,7 @@ export const MOCK_PROFESSORS: User[] = [
     university: 'جامعة العلوم والتكنولوجيا هواري بومدين (USTHB)',
     college: 'كلية الإعلام الآلي',
     stars: 20,
+    deviceToken: undefined,
   },
 ];
 
@@ -121,6 +124,7 @@ export const MOCK_STUDENTS: User[] = [
     university: 'جامعة الجزائر 1 بن يوسف بن خدة',
     college: 'كلية العلوم',
     balance: 500, // Initial balance
+    deviceToken: undefined,
   },
   {
     id: 'stud2',
@@ -131,6 +135,7 @@ export const MOCK_STUDENTS: User[] = [
     university: 'جامعة وهران 1 أحمد بن بلة',
     college: 'كلية الطب',
     balance: 750, // Initial balance
+    deviceToken: undefined,
   },
   {
     id: 'stud3',
@@ -141,6 +146,7 @@ export const MOCK_STUDENTS: User[] = [
     university: 'جامعة العلوم والتكنولوجيا هواري بومدين (USTHB)',
     college: 'كلية الإعلام الآلي',
     balance: 1000, // Initial balance
+    deviceToken: undefined,
   },
 ];
 
@@ -154,6 +160,7 @@ export const MOCK_DEMO_STUDENT: User = {
   university: 'جامعة ابن خلدون ملحقة قصر الشلالة', // Updated university
   college: 'كلية العلوم الاقتصادية و علوم التسيير', // Updated college
   balance: 2000, // Initial balance for demo student
+  deviceToken: undefined,
 };
 
 export const MOCK_DEMO_PROFESSOR: User = {
@@ -165,6 +172,7 @@ export const MOCK_DEMO_PROFESSOR: User = {
   university: 'جامعة ابن خلدون ملحقة قصر الشلالة', // Updated university
   college: 'كلية العلوم الاقتصادية و علوم التسيير', // Updated college
   stars: 20,
+  deviceToken: undefined,
 };
 
 

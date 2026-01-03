@@ -8,8 +8,10 @@ const ASSETS_TO_CACHE = [
   '/index.tsx',
   '/manifest.json',
   '/service-worker.js',
+  '/firebase-messaging-sw.js', // Include the new FCM service worker
   '/types.ts',
   '/constants.ts',
+  '/firebase.ts', // Include the new firebase config file
   '/services/authService.ts',
   '/services/channelService.ts',
   '/services/geminiService.ts',
@@ -44,6 +46,10 @@ const ASSETS_TO_CACHE = [
 // URLs that should always be fetched from the network and not cached
 const NETWORK_ONLY_URLS = [
   'https://generativelanguage.googleapis.com/', // Gemini API calls
+  'https://fcm.googleapis.com/', // Firebase Cloud Messaging
+  'https://firestore.googleapis.com/', // If using Firestore
+  'https://identitytoolkit.googleapis.com/', // If using Firebase Auth
+  'https://securetoken.googleapis.com/', // If using Firebase Auth
   '/api/', // Placeholder for any potential backend API calls
   'https://meet.google.com/' // Google Meet links are external and dynamic
 ];

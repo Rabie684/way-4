@@ -1,9 +1,22 @@
 import { User, UserRole } from '../types';
 import { MOCK_PROFESSORS, MOCK_STUDENTS, MOCK_DEMO_PROFESSOR, MOCK_DEMO_STUDENT } from '../constants';
 
-// Initialize mock data including demo users, ensuring no duplicates
-const ALL_MOCK_PROFESSORS = [...MOCK_PROFESSORS, MOCK_DEMO_PROFESSOR].filter((v, i, a) => a.findIndex(t => (t.id === v.id || t.email === v.email)) === i);
-const ALL_MOCK_STUDENTS = [...MOCK_STUDENTS, MOCK_DEMO_STUDENT].filter((v, i, a) => a.findIndex(t => (t.id === v.id || t.email === v.email)) === i);
+// Initialize mock data including demo users, ensuring no duplicates and proper type handling
+// Using a function to ensure ALL_MOCK_USERS is dynamically populated and always up-to-date if modified elsewhere
+let ALL_USERS: User[] = [];
+
+const initializeAllUsers = () => {
+  const initialUsers: User[] = [
+    ...MOCK_PROFESSORS,
+    ...MOCK_STUDENTS,
+    MOCK_DEMO_PROFESSOR,
+    MOCK_DEMO_STUDENT,
+  ];
+  // Filter out duplicates based on id or email
+  ALL_USERS = initialUsers.filter((v, i, a) => a.findIndex(t => (t.id === v.id || t.email === v.email)) === i);
+};
+
+initializeAllUsers(); // Call once on script load
 
 // This is a mock authentication service. In a real application, this would interact with a backend.
 export const authService = {
@@ -12,16 +25,16 @@ export const authService = {
 
     let user: User | undefined;
     if (role === UserRole.Professor) {
-      user = ALL_MOCK_PROFESSORS.find(u => u.email === email);
+      user = ALL_USERS.find(u => u.email === email && u.role === UserRole.Professor);
     } else {
-      user = ALL_MOCK_STUDENTS.find(u => u.email === email);
-      // Ensure student has a balance, default to 0 if not set (for older mock data)
-      if (user && user.role === UserRole.Student && user.balance === undefined) {
-          user.balance = 0;
-      }
+      user = ALL_USERS.find(u => u.email === email && u.role === UserRole.Student);
     }
 
     if (user) {
+      // Ensure student has a balance, default to 0 if not set (for older mock data)
+      if (user.role === UserRole.Student && user.balance === undefined) {
+          user.balance = 0;
+      }
       localStorage.setItem('currentUser', JSON.stringify(user));
       return user;
     }
@@ -32,8 +45,7 @@ export const authService = {
     await new Promise(resolve => setTimeout(resolve, 500)); // Simulate API call
 
     // Check if user already exists
-    const allUsers = [...ALL_MOCK_PROFESSORS, ...ALL_MOCK_STUDENTS];
-    if (allUsers.some(u => u.email === email)) {
+    if (ALL_USERS.some(u => u.email === email)) {
       console.error('User with this email already exists.');
       return null;
     }
@@ -48,13 +60,10 @@ export const authService = {
       college,
       ...(role === UserRole.Professor && { stars: 0 }),
       ...(role === UserRole.Student && { balance: 0 }), // Initialize balance for new students
+      deviceToken: undefined, // Initialize deviceToken as undefined
     };
 
-    if (role === UserRole.Professor) {
-      ALL_MOCK_PROFESSORS.push(newUser); // Add to mock data
-    } else {
-      ALL_MOCK_STUDENTS.push(newUser); // Add to mock data
-    }
+    ALL_USERS.push(newUser); // Add to mock data
 
     localStorage.setItem('currentUser', JSON.stringify(newUser));
     return newUser;
@@ -77,18 +86,18 @@ export const authService = {
 
   updateUser: async (updatedUser: User): Promise<User> => {
     await new Promise(resolve => setTimeout(resolve, 200)); // Simulate API call
-    if (updatedUser.role === UserRole.Professor) {
-        const index = ALL_MOCK_PROFESSORS.findIndex(u => u.id === updatedUser.id);
-        if (index !== -1) {
-            ALL_MOCK_PROFESSORS[index] = updatedUser;
-        }
+    const index = ALL_USERS.findIndex(u => u.id === updatedUser.id);
+    if (index !== -1) {
+        ALL_USERS[index] = updatedUser;
     } else {
-        const index = ALL_MOCK_STUDENTS.findIndex(u => u.id === updatedUser.id);
-        if (index !== -1) {
-            ALL_MOCK_STUDENTS[index] = updatedUser;
-        }
+        console.warn("Attempted to update a user not found in ALL_USERS mock data.");
     }
     localStorage.setItem('currentUser', JSON.stringify(updatedUser));
     return updatedUser;
-  }
+  },
+
+  // New utility to get all users, for notification sending simulation
+  getAllUsers: (): User[] => {
+    return [...ALL_USERS];
+  },
 };

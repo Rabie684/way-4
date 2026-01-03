@@ -19,6 +19,7 @@ export interface User {
   college?: string;
   stars?: number; // Only for Professor
   balance?: number; // New: For student wallet
+  deviceToken?: string; // New: For Firebase Cloud Messaging (FCM) device token
 }
 
 export interface ChannelContent {

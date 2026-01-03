@@ -9,10 +9,12 @@ import ChannelDetail from './components/ChannelDetail';
 import ProfileSettingsComponent from './components/ProfileSettings';
 import PrivateChatView from './components/PrivateChatView';
 import WelcomeScreen from './components/WelcomeScreen';
-// FIX: Import JarvisAssistant as a default export
 import JarvisAssistant from './components/JarvisAssistant';
 import { MOCK_CHANNELS, MOCK_PRIVATE_CHATS, MOCK_DEMO_STUDENT, MOCK_DEMO_PROFESSOR } from './constants';
 import LoadingSpinner from './components/LoadingSpinner'; // Import LoadingSpinner for the splash screen
+
+// Firebase Imports
+import { messaging, requestNotificationPermissionAndGetToken } from './firebase';
 
 type AppView = 'dashboard' | 'channelDetail' | 'profileSettings' | 'privateChats' | 'jarvisAssistant'; // Add new view type
 
@@ -32,6 +34,7 @@ const App: React.FC = () => {
   const [authScreenMode, setAuthScreenMode] = useState<'login' | 'register'>('login'); // To control AuthScreen's initial mode
   const [deferredPrompt, setDeferredPrompt] = useState<Event | null>(null); // State to store PWA install prompt
 
+  // --- Theme and Language Effect ---
   useEffect(() => {
     // Apply dark mode and language settings immediately on render
     if (profileSettings.isDarkMode) {
@@ -58,27 +61,58 @@ const App: React.FC = () => {
     return () => clearTimeout(splashTimer); // Cleanup timeout
   }, [profileSettings]); // Re-run effect if profileSettings changes (for theme/lang updates)
 
+  // --- PWA Install Prompt Effect ---
   useEffect(() => {
-    // Listen for the beforeinstallprompt event for PWA installation
     const handleBeforeInstallPrompt = (e: Event) => {
-      // Prevent the mini-infobar from appearing on mobile
       e.preventDefault();
-      // Stash the event so it can be triggered later.
       setDeferredPrompt(e);
       console.log('beforeinstallprompt event fired.');
     };
 
     window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
-
     return () => {
       window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
     };
   }, []);
 
-  const handleLoginSuccess = useCallback((user: User) => {
+  // --- Firebase Messaging Service Worker Registration and Permission Request Effect ---
+  useEffect(() => {
+    // Register Firebase Messaging Service Worker
+    const registerFCMServiceWorker = async () => {
+      if ('serviceWorker' in navigator && messaging) {
+        try {
+          const registration = await navigator.serviceWorker.register('/firebase-messaging-sw.js', { scope: '/' });
+          console.log('Firebase Messaging Service Worker registered:', registration);
+        } catch (error) {
+          console.error('Firebase Messaging Service Worker registration failed:', error);
+        }
+      }
+    };
+
+    // Request notification permissions after initial app load, for any user (as requested)
+    const requestPermissionsOnLoad = async () => {
+      if (!isAppLoading && Notification.permission === 'default') {
+        // Add a small delay to ensure other UI elements are stable, then prompt.
+        // This attempts to fulfill "بمجرد دخول الموقع" without blocking main rendering.
+        setTimeout(async () => {
+          await requestNotificationPermissionAndGetToken(currentUser, setCurrentUser);
+        }, 3000); 
+      }
+    };
+
+    registerFCMServiceWorker();
+    requestPermissionsOnLoad();
+
+  }, [isAppLoading, currentUser]); // Re-run when app loading state or current user changes
+
+  // --- Handlers ---
+  const handleLoginSuccess = useCallback(async (user: User) => {
     setCurrentUser(user);
     setCurrentView('dashboard');
     setShowWelcomeScreen(false); // Ensure welcome screen is hidden after login
+
+    // Request permission and get token after successful login
+    await requestNotificationPermissionAndGetToken(user, setCurrentUser);
   }, []);
 
   const handleLogout = useCallback(async () => {
@@ -137,8 +171,6 @@ const App: React.FC = () => {
       if (loggedInUser) {
         handleLoginSuccess(loggedInUser);
       } else {
-        // Fallback if demo user not found in authService (e.g., if MOCK_DEMO_STUDENT wasn't in the internal array)
-        // In this mock setup, it should always succeed if constants are correct.
         console.error("Failed to login demo user.");
       }
     }
@@ -146,13 +178,9 @@ const App: React.FC = () => {
 
   const handleInstallPWA = useCallback(async () => {
     if (deferredPrompt) {
-      // Show the install prompt
       (deferredPrompt as any).prompt();
-      // Wait for the user to respond to the prompt
       const { outcome } = await (deferredPrompt as any).userChoice;
-      // Optionally, send analytics event with outcome of user choice
       console.log(`User response to the install prompt: ${outcome}`);
-      // We've used the prompt, and it can't be used again. Clear it.
       setDeferredPrompt(null);
     }
   }, [deferredPrompt]);
