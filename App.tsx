@@ -77,17 +77,11 @@ const App: React.FC = () => {
 
   // --- Firebase Messaging Service Worker Registration and Permission Request Effect ---
   useEffect(() => {
-    // Register Firebase Messaging Service Worker
-    const registerFCMServiceWorker = async () => {
-      if ('serviceWorker' in navigator && messaging) {
-        try {
-          const registration = await navigator.serviceWorker.register('/firebase-messaging-sw.js', { scope: '/' });
-          console.log('Firebase Messaging Service Worker registered:', registration);
-        } catch (error) {
-          console.error('Firebase Messaging Service Worker registration failed:', error);
-        }
-      }
-    };
+    // IMPORTANT: Firebase Messaging SDK will handle registering `firebase-messaging-sw.js` implicitly
+    // when `getToken` is called, provided the file is at the root.
+    // Explicitly calling `navigator.serviceWorker.register` here for FCM is often unnecessary
+    // and can sometimes lead to "document in invalid state" errors or conflicts.
+    // We rely on the `getToken` call in `requestNotificationPermissionAndGetToken` to ensure the FCM SW is found/registered.
 
     // Request notification permissions after initial app load, for any user (as requested)
     const requestPermissionsOnLoad = async () => {
@@ -100,7 +94,7 @@ const App: React.FC = () => {
       }
     };
 
-    registerFCMServiceWorker();
+    // Only call the permission request function. FCM SW registration is handled by getToken internally.
     requestPermissionsOnLoad();
 
   }, [isAppLoading, currentUser]); // Re-run when app loading state or current user changes

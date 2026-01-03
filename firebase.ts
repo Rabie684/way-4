@@ -33,9 +33,10 @@ export const requestNotificationPermissionAndGetToken = async (
   }
 
   // Check if Firebase Messaging Service Worker is registered
+  // Firebase SDK's getToken often handles this implicitly, but this check is good for debugging.
   if (!navigator.serviceWorker.controller) {
-    console.warn("Firebase Messaging Service Worker is not active yet.");
-    return;
+    console.warn("Firebase Messaging Service Worker is not active yet. getToken will attempt to register it.");
+    // No explicit return here, let getToken try to register it.
   }
 
   // Request permission
@@ -44,8 +45,11 @@ export const requestNotificationPermissionAndGetToken = async (
     console.log("Notification permission granted.");
     try {
       // VAPID key from Firebase project settings -> Cloud Messaging -> Web configuration
-      // IMPORTANT: Replace with your actual VAPID key. This is a placeholder.
-      const vapidKey = "BLvK0Lh6K6v5mJ0F4G8h5o9p1q2r3s4t5u6v7w8x9y0z1A2B3C4D5E6F7G8H9I0J"; // Placeholder VAPID key
+      // IMPORTANT: You MUST replace this placeholder with your actual VAPID key from your Firebase project.
+      // This key is unique to your project and origin. Using a placeholder or incorrect key
+      // often leads to cross-origin registration errors (e.g., 'https://ai.studio' mismatch).
+      // To get your VAPID key: Go to Firebase Console -> Project settings -> Cloud Messaging tab -> Web configuration -> Generate key pair.
+      const vapidKey = "BLvK0Lh6K6v5mJ0F4G8h5o9p1q2r3s4t5u6v7w8x9y0z1A2B3C4D5E6F7G8H9I0J"; // Placeholder VAPID key - REPLACE THIS!
 
       const currentToken = await getToken(messaging, { vapidKey: vapidKey });
       if (currentToken) {
