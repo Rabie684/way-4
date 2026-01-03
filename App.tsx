@@ -13,8 +13,7 @@ import JarvisAssistant from './components/JarvisAssistant';
 import { MOCK_CHANNELS, MOCK_PRIVATE_CHATS, MOCK_DEMO_STUDENT, MOCK_DEMO_PROFESSOR } from './constants';
 import LoadingSpinner from './components/LoadingSpinner'; // Import LoadingSpinner for the splash screen
 
-// Firebase Imports
-import { messaging, requestNotificationPermissionAndGetToken } from './firebase';
+// Removed Firebase Imports (messaging, requestNotificationPermissionAndGetToken)
 
 type AppView = 'dashboard' | 'channelDetail' | 'profileSettings' | 'privateChats' | 'jarvisAssistant'; // Add new view type
 
@@ -33,6 +32,7 @@ const App: React.FC = () => {
   const [showWelcomeScreen, setShowWelcomeScreen] = useState(false); // Changed to false, managed after isAppLoading
   const [authScreenMode, setAuthScreenMode] = useState<'login' | 'register'>('login'); // To control AuthScreen's initial mode
   const [deferredPrompt, setDeferredPrompt] = useState<Event | null>(null); // State to store PWA install prompt
+  // Removed serviceWorkerRegistration state
 
   // --- Theme and Language Effect ---
   useEffect(() => {
@@ -75,29 +75,7 @@ const App: React.FC = () => {
     };
   }, []);
 
-  // --- Firebase Messaging Service Worker Registration and Permission Request Effect ---
-  useEffect(() => {
-    // IMPORTANT: Firebase Messaging SDK will handle registering `firebase-messaging-sw.js` implicitly
-    // when `getToken` is called, provided the file is at the root.
-    // Explicitly calling `navigator.serviceWorker.register` here for FCM is often unnecessary
-    // and can sometimes lead to "document in invalid state" errors or conflicts.
-    // We rely on the `getToken` call in `requestNotificationPermissionAndGetToken` to ensure the FCM SW is found/registered.
-
-    // Request notification permissions after initial app load, for any user (as requested)
-    const requestPermissionsOnLoad = async () => {
-      if (!isAppLoading && Notification.permission === 'default') {
-        // Add a small delay to ensure other UI elements are stable, then prompt.
-        // This attempts to fulfill "بمجرد دخول الموقع" without blocking main rendering.
-        setTimeout(async () => {
-          await requestNotificationPermissionAndGetToken(currentUser, setCurrentUser);
-        }, 3000); 
-      }
-    };
-
-    // Only call the permission request function. FCM SW registration is handled by getToken internally.
-    requestPermissionsOnLoad();
-
-  }, [isAppLoading, currentUser]); // Re-run when app loading state or current user changes
+  // Removed Service Worker Registration and Firebase Messaging Setup useEffect
 
   // --- Handlers ---
   const handleLoginSuccess = useCallback(async (user: User) => {
@@ -105,9 +83,8 @@ const App: React.FC = () => {
     setCurrentView('dashboard');
     setShowWelcomeScreen(false); // Ensure welcome screen is hidden after login
 
-    // Request permission and get token after successful login
-    await requestNotificationPermissionAndGetToken(user, setCurrentUser);
-  }, []);
+    // Removed Firebase notification setup after login
+  }, []); // Removed serviceWorkerRegistration dependency
 
   const handleLogout = useCallback(async () => {
     await authService.logout();
@@ -224,8 +201,7 @@ const App: React.FC = () => {
         onNavigateToDashboard={handleBackToDashboard}
         onNavigateToPrivateChats={handleNavigateToPrivateChats}
         onNavigateToJarvis={handleNavigateToJarvis} // Pass Jarvis navigation handler
-        deferredPrompt={deferredPrompt} // Pass deferredPrompt to Navbar
-        onInstallPWA={handleInstallPWA} // Pass onInstallPWA to Navbar
+        // Removed deferredPrompt and onInstallPWA from Navbar props
       />
       <main className="flex-1 flex overflow-hidden">
         {currentView === 'dashboard' && currentUser.role === UserRole.Professor && (

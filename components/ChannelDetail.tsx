@@ -8,6 +8,7 @@ import LoadingSpinner from './LoadingSpinner';
 import { geminiService } from '../services/geminiService';
 import Select from './Select';
 import { LANGUAGES } from '../constants';
+import { authService } from '../services/authService'; // Import authService to get all users
 
 interface ChannelDetailProps {
   channel: Channel;
@@ -61,6 +62,7 @@ const ChannelDetail: React.FC<ChannelDetailProps> = ({ channel, currentUser, onB
         setChannels(prev => prev.map(c => (c.id === updatedChannel.id ? updatedChannel : c)));
         setUploadFile(null);
         setMessage('تم نشر المحتوى بنجاح!');
+        // Removed Firebase Cloud Messaging notification simulation as per user request.
       };
       reader.readAsDataURL(uploadFile);
     } catch (err) {

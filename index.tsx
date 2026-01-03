@@ -14,17 +14,20 @@ root.render(
   </React.StrictMode>
 );
 
-// Register service worker for PWA capabilities
+// Explicit Service Worker registration for PWA functionality.
+// This ensures caching and offline capabilities work as expected,
+// now that Firebase Messaging and its internal SW management are removed.
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    // Construct the absolute URL for the service worker script to avoid cross-origin issues
-    const serviceWorkerUrl = `${window.location.origin}/service-worker.js`;
+    // FIX: Construct an absolute URL for the service worker script using the current origin
+    // to resolve the "origin mismatch" error in certain environments.
+    const serviceWorkerUrl = new URL('/service-worker.js', window.location.origin).href;
     navigator.serviceWorker.register(serviceWorkerUrl)
       .then(registration => {
-        console.log('ServiceWorker registration successful with scope: ', registration.scope);
+        console.log('Service Worker registered successfully:', registration);
       })
       .catch(error => {
-        console.error('ServiceWorker registration failed: ', error);
+        console.error('Service Worker registration failed:', error);
       });
   });
 }

@@ -60,7 +60,6 @@ export const authService = {
       college,
       ...(role === UserRole.Professor && { stars: 0 }),
       ...(role === UserRole.Student && { balance: 0 }), // Initialize balance for new students
-      deviceToken: undefined, // Initialize deviceToken as undefined
     };
 
     ALL_USERS.push(newUser); // Add to mock data

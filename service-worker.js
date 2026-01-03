@@ -1,17 +1,20 @@
 const CACHE_NAME = 'way-cache-v1';
 
+// Removed Firebase SDK imports
+// Removed Firebase configuration
+// Removed Firebase initialization
+// Removed Handle background messages
+
 // List of core app shell files to cache upon installation.
-// Includes all local .tsx and .ts files, as they are loaded as ES modules.
 const ASSETS_TO_CACHE = [
   '/', // Catches navigation requests for the root
   '/index.html',
   '/index.tsx',
   '/manifest.json',
   '/service-worker.js',
-  '/firebase-messaging-sw.js', // Include the new FCM service worker
   '/types.ts',
   '/constants.ts',
-  '/firebase.ts', // Include the new firebase config file
+  // Removed '/firebase.ts' - it's no longer a separate file and its functionality is removed
   '/services/authService.ts',
   '/services/channelService.ts',
   '/services/geminiService.ts',
@@ -28,13 +31,10 @@ const ASSETS_TO_CACHE = [
   '/components/ChannelDetail.tsx',
   '/components/PrivateChatView.tsx',
   '/components/WelcomeScreen.tsx',
-  '/components/JarvisAssistant.tsx', // New component
-  // PWA Icons (using placeholders for now, in a real app these would be actual files)
-  '/pwa-icon-192.png', 
-  '/pwa-icon-512.png',
-  // New PWA Icons for Ibn Khaldoun University
-  '/pwa-icon-uik-192.png',
-  '/pwa-icon-uik-512.png',
+  '/components/JarvisAssistant.tsx',
+  // PWA Icons - Updated to university-themed names
+  '/university-icon-192.png',
+  '/university-icon-512.png',
   // External CDN assets
   'https://cdn.tailwindcss.com',
   'https://esm.sh/@google/genai@^1.34.0',
@@ -46,7 +46,6 @@ const ASSETS_TO_CACHE = [
 // URLs that should always be fetched from the network and not cached
 const NETWORK_ONLY_URLS = [
   'https://generativelanguage.googleapis.com/', // Gemini API calls
-  'https://fcm.googleapis.com/', // Firebase Cloud Messaging
   'https://firestore.googleapis.com/', // If using Firestore
   'https://identitytoolkit.googleapis.com/', // If using Firebase Auth
   'https://securetoken.googleapis.com/', // If using Firebase Auth
@@ -136,33 +135,3 @@ self.addEventListener('fetch', (event) => {
     })
   );
 });
-
-// Optional: Handle push notifications and background sync (not explicitly requested but common for PWA)
-/*
-self.addEventListener('push', (event) => {
-  const data = event.data.json();
-  const title = data.title || 'جامعتك الرقمية Way';
-  const options = {
-    body: data.body || 'لديك إشعار جديد!',
-    icon: '/pwa-icon-192.png', // PWA Icon
-  };
-  event.waitUntil(self.registration.showNotification(title, options));
-});
-
-self.addEventListener('notificationclick', (event) => {
-  event.notification.close();
-  event.waitUntil(
-    clients.openWindow('/index.html') // Open the app when notification is clicked
-  );
-});
-
-self.addEventListener('sync', (event) => {
-  if (event.tag === 'send-offline-messages') {
-    // Logic to sync messages sent offline once network is back
-    event.waitUntil(
-      // Implement logic to retrieve and send messages from IndexedDB or similar
-      console.log('Background sync: sending offline messages...')
-    );
-  }
-});
-*/

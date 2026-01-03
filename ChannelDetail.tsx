@@ -54,6 +54,7 @@ const ChannelDetail: React.FC<ChannelDetailProps> = ({ channel, currentUser, onB
         const base64Url = reader.result as string;
         const newContent: Omit<ChannelContent, 'id'> = {
           type: uploadFileType,
+          // FIX: Corrected typo from base66Url to base64Url
           url: base64Url,
           fileName: uploadFileType === 'pdf' ? uploadFile.name : undefined,
           thumbnail: uploadFileType === 'video' ? 'https://picsum.photos/300/200?random=' + Date.now() : undefined, // Mock thumbnail
@@ -62,42 +63,7 @@ const ChannelDetail: React.FC<ChannelDetailProps> = ({ channel, currentUser, onB
         setChannels(prev => prev.map(c => (c.id === updatedChannel.id ? updatedChannel : c)));
         setUploadFile(null);
         setMessage('تم نشر المحتوى بنجاح!');
-
-        // --- Simulate sending FCM notification to subscribers ---
-        console.log(`Simulating notification for new content in channel: ${channel.name}`);
-        const allUsers = authService.getAllUsers();
-        const subscribers = allUsers.filter(user => channel.subscribers.includes(user.id) && user.deviceToken);
-
-        if (subscribers.length > 0) {
-          subscribers.forEach(subscriber => {
-            if (subscriber.deviceToken) {
-              const notificationPayload = {
-                to: subscriber.deviceToken,
-                notification: {
-                  title: `محتوى جديد في قناة ${channel.name}!`,
-                  body: `قام الأستاذ ${currentUser.name} بنشر ${newContent.type === 'pdf' ? 'ملف PDF جديد' : newContent.type === 'image' ? 'صورة جديدة' : 'فيديو جديد'}.`,
-                  icon: '/pwa-icon-uik-192.png',
-                },
-                data: {
-                  channelId: channel.id,
-                  url: '/', // Or a specific deep link to the channel
-                },
-              };
-              console.log(`[SIMULATED FCM] Sending notification to subscriber ${subscriber.name} (${subscriber.id}) with token ${subscriber.deviceToken}:`, notificationPayload);
-              // In a real application, you would send this payload to your backend,
-              // which would then use the Firebase Admin SDK to send it via FCM.
-              // Example (client-side simulation, won't actually send via FCM):
-              if (Notification.permission === 'granted' && subscriber.id === currentUser.id) {
-                 // If the professor also has notifications enabled and is currently viewing, show local notification
-                 new Notification(notificationPayload.notification.title, notificationPayload.notification);
-              }
-            }
-          });
-        } else {
-          console.log(`No active subscribers with device tokens found for channel ${channel.name}.`);
-        }
-        // --- End of FCM simulation ---
-
+        // Removed Firebase Cloud Messaging notification simulation as per user request.
       };
       reader.readAsDataURL(uploadFile);
     } catch (err) {

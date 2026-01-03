@@ -9,8 +9,7 @@ interface NavbarProps {
   onNavigateToDashboard: () => void;
   onNavigateToPrivateChats: () => void;
   onNavigateToJarvis: () => void;
-  deferredPrompt: Event | null; // New prop for PWA install prompt
-  onInstallPWA: () => void; // New prop for PWA install handler
+  // Removed deferredPrompt and onInstallPWA as they are now handled by WelcomeScreen
 }
 
 const Navbar: React.FC<NavbarProps> = ({
@@ -20,8 +19,7 @@ const Navbar: React.FC<NavbarProps> = ({
   onNavigateToDashboard,
   onNavigateToPrivateChats,
   onNavigateToJarvis,
-  deferredPrompt, // Use new prop
-  onInstallPWA, // Use new prop
+  // Removed deferredPrompt and onInstallPWA from props
 }) => {
   return (
     <nav className="bg-green-700 dark:bg-green-900 p-4 shadow-lg sticky top-0 z-10">
@@ -50,11 +48,7 @@ const Navbar: React.FC<NavbarProps> = ({
 
         {currentUser ? (
           <div className="flex items-center space-x-4">
-            {deferredPrompt && ( // Show PWA install button if prompt is available and user is logged in
-              <Button onClick={onInstallPWA} variant="secondary" size="sm" className="hidden sm:block">
-                <span role="img" aria-label="install" className="ml-1">⬇️</span> تثبيت التطبيق
-              </Button>
-            )}
+            {/* Removed PWA install button from Navbar as it's now primarily on WelcomeScreen */}
             <img
               src={currentUser.profilePic}
               alt="Profile"
